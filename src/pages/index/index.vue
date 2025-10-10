@@ -62,7 +62,10 @@ function onChange(e: any) {
 
     <!-- 我要调解、仲裁区块 -->
     <view class="mt-4">
-      <text class="px-4 text-gray-800 font-medium">我要调解、仲裁</text>
+      <view class="flex items-center">
+        <view class="mr-2 h-5 w-1 bg-blue-500" />
+        <text class="px-2 text-gray-800 font-medium">我要调解、仲裁</text>
+      </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 纠纷调解卡片 -->
         <view class="flex flex-col items-center rounded-xl bg-blue-500 p-4 shadow-md">
@@ -81,7 +84,10 @@ function onChange(e: any) {
 
     <!-- 我的服务区块 -->
     <view class="mt-4">
-      <text class="px-4 text-gray-800 font-medium">我的服务</text>
+      <view class="flex items-center">
+        <view class="mr-2 h-5 w-1 bg-blue-500" />
+        <text class="px-2 text-gray-800 font-medium">我的服务</text>
+      </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 法律咨询卡片 -->
         <view class="flex flex-col items-center rounded-xl bg-red-500 p-4 shadow-md">
@@ -112,7 +118,10 @@ function onChange(e: any) {
 
     <!-- 服务反馈区块 -->
     <view class="mt-4">
-      <text class="px-4 text-gray-800 font-medium">服务反馈</text>
+      <view class="flex items-center">
+        <view class="mr-2 h-5 w-1 bg-blue-500" />
+        <text class="px-2 text-gray-800 font-medium">服务反馈</text>
+      </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 服务评价卡片 -->
         <view class="flex flex-col items-center rounded-xl bg-green-500 p-4 shadow-md">
