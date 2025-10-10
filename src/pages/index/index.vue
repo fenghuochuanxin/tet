@@ -42,7 +42,7 @@ function onChange(e: any) {
 
 <template>
   <view class="min-h-screen bg-gray-50" :style="{ marginTop: `${safeAreaInsets?.top}px` }">
-    <!-- 使用 wot-design-uni 的轮播图组件（按官方文档正确用法） -->
+    <!-- 使用 wot-design-uni 的轮播图组件 -->
     <wd-swiper
       v-model:current="current"
       :list="swiperList"
@@ -67,17 +67,21 @@ function onChange(e: any) {
         <text class="px-2 text-gray-800 font-medium">我要调解、仲裁</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
-        <!-- 纠纷调解卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-blue-500 p-4 shadow-md">
-          <image src="/static/app/mediation.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">纠纷调解</text>
-          <text class="mt-1 text-xs text-white/90">线上调解，方便省事</text>
+        <!-- 纠纷调解卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-blue-500 p-4 shadow-md">
+          <image src="/static/app/mediation.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">纠纷调解</text>
+            <text class="block text-xs text-white/90">线上调解，方便省事</text>
+          </view>
         </view>
-        <!-- 仲裁办理卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-blue-400 p-4 shadow-md">
-          <image src="/static/app/arbitration.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">仲裁办理</text>
-          <text class="mt-1 text-xs text-white/90">确认产生法律强制力</text>
+        <!-- 仲裁办理卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md">
+          <image src="/static/app/arbitration.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">仲裁办理</text>
+            <text class="block text-xs text-white/90">确认产生法律强制力</text>
+          </view>
         </view>
       </view>
     </view>
@@ -89,29 +93,37 @@ function onChange(e: any) {
         <text class="px-2 text-gray-800 font-medium">我的服务</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
-        <!-- 法律咨询卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-red-500 p-4 shadow-md">
-          <image src="/static/app/consultation.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">法律咨询</text>
-          <text class="mt-1 text-xs text-white/90">立即咨询，高效准确</text>
+        <!-- 法律咨询卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-red-500 p-4 shadow-md">
+          <image src="/static/app/consultation.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">法律咨询</text>
+            <text class="block text-xs text-white/90">立即咨询，高效准确</text>
+          </view>
         </view>
-        <!-- 合同服务卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-orange-500 p-4 shadow-md">
-          <image src="/static/app/contract.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">合同服务</text>
-          <text class="mt-1 text-xs text-white/90">预防纠纷，合同保障</text>
+        <!-- 合同服务卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-orange-500 p-4 shadow-md">
+          <image src="/static/app/contract.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">合同服务</text>
+            <text class="block text-xs text-white/90">预防纠纷，合同保障</text>
+          </view>
         </view>
-        <!-- 案件代理卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-teal-500 p-4 shadow-md">
-          <image src="/static/app/case.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">案件代理</text>
-          <text class="mt-1 text-xs text-white/90">代理人查看案件</text>
+        <!-- 案件代理卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-teal-500 p-4 shadow-md">
+          <image src="/static/app/case.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">案件代理</text>
+            <text class="block text-xs text-white/90">代理人查看案件</text>
+          </view>
         </view>
-        <!-- 服务指南卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-blue-400 p-4 shadow-md">
-          <image src="/static/app/guide.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">服务指南</text>
-          <text class="mt-1 text-xs text-white/90">小程序使用指南</text>
+        <!-- 服务指南卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md">
+          <image src="/static/app/guide.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">服务指南</text>
+            <text class="block text-xs text-white/90">小程序使用指南</text>
+          </view>
         </view>
       </view>
     </view>
@@ -123,17 +135,21 @@ function onChange(e: any) {
         <text class="px-2 text-gray-800 font-medium">服务反馈</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
-        <!-- 服务评价卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-green-500 p-4 shadow-md">
-          <image src="/static/app/evaluation.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">服务评价</text>
-          <text class="mt-1 text-xs text-white/90">小程序服务评价</text>
+        <!-- 服务评价卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-green-500 p-4 shadow-md">
+          <image src="/static/app/evaluation.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">服务评价</text>
+            <text class="block text-xs text-white/90">小程序服务评价</text>
+          </view>
         </view>
-        <!-- 线上互动卡片 -->
-        <view class="flex flex-col items-center rounded-xl bg-indigo-500 p-4 shadow-md">
-          <image src="/static/app/interactive.png" mode="aspectFit" class="mb-2 h-10 w-10" />
-          <text class="text-white font-medium">线上互动</text>
-          <text class="mt-1 text-xs text-white/90">扫码进群在线互动</text>
+        <!-- 线上互动卡片 - 左右布局 -->
+        <view class="flex items-center rounded-xl bg-indigo-500 p-4 shadow-md">
+          <image src="/static/app/interactive.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="ml-3">
+            <text class="text-white font-medium">线上互动</text>
+            <text class="block text-xs text-white/90">扫码进群在线互动</text>
+          </view>
         </view>
       </view>
     </view>
