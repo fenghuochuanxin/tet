@@ -56,7 +56,7 @@ function onChange(e: any) {
 
     <!-- 欢迎加入提示 -->
     <view class="mt-3 flex items-center bg-amber-50 p-3 space-x-2">
-      <image src="/static/app/notification.png" mode="aspectFit" class="h-4 w-4" />
+      <view class="i-carbon-bell h-4 w-4 text-amber-800" />
       <text class="text-sm text-amber-800">我啦！欢迎律师、调解员、合同管理员加入平台，共同打造专业法律服务网络</text>
     </view>
 
@@ -69,7 +69,7 @@ function onChange(e: any) {
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 纠纷调解卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-blue-500 p-4 shadow-md">
-          <image src="/static/app/mediation.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-handshake h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">纠纷调解</text>
             <text class="block text-xs text-white/90">线上调解，方便省事</text>
@@ -77,7 +77,7 @@ function onChange(e: any) {
         </view>
         <!-- 仲裁办理卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md">
-          <image src="/static/app/arbitration.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-scale h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">仲裁办理</text>
             <text class="block text-xs text-white/90">确认产生法律强制力</text>
@@ -95,7 +95,7 @@ function onChange(e: any) {
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 法律咨询卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-red-500 p-4 shadow-md">
-          <image src="/static/app/consultation.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-question h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">法律咨询</text>
             <text class="block text-xs text-white/90">立即咨询，高效准确</text>
@@ -103,7 +103,7 @@ function onChange(e: any) {
         </view>
         <!-- 合同服务卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-orange-500 p-4 shadow-md">
-          <image src="/static/app/contract.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-document-text h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">合同服务</text>
             <text class="block text-xs text-white/90">预防纠纷，合同保障</text>
@@ -111,7 +111,7 @@ function onChange(e: any) {
         </view>
         <!-- 案件代理卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-teal-500 p-4 shadow-md">
-          <image src="/static/app/case.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-case-file h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">案件代理</text>
             <text class="block text-xs text-white/90">代理人查看案件</text>
@@ -119,7 +119,7 @@ function onChange(e: any) {
         </view>
         <!-- 服务指南卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md">
-          <image src="/static/app/guide.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-book-open h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">服务指南</text>
             <text class="block text-xs text-white/90">小程序使用指南</text>
@@ -137,7 +137,7 @@ function onChange(e: any) {
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 服务评价卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-green-500 p-4 shadow-md">
-          <image src="/static/app/evaluation.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-rating h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">服务评价</text>
             <text class="block text-xs text-white/90">小程序服务评价</text>
@@ -145,7 +145,7 @@ function onChange(e: any) {
         </view>
         <!-- 线上互动卡片 - 左右布局 -->
         <view class="flex items-center rounded-xl bg-indigo-500 p-4 shadow-md">
-          <image src="/static/app/interactive.png" mode="aspectFit" class="h-10 w-10" />
+          <view class="i-carbon-chat-group h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">线上互动</text>
             <text class="block text-xs text-white/90">扫码进群在线互动</text>
