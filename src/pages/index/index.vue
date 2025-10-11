@@ -54,6 +54,13 @@ function navigateToContractService() {
     url: '/pages-sub/contract-service/index',
   })
 }
+
+// 跳转到服务评价页面
+function navigateToServiceEvaluation() {
+  uni.navigateTo({
+    url: '/pages-sub/services/service-evaluation',
+  })
+}
 </script>
 
 <template>
@@ -152,7 +159,7 @@ function navigateToContractService() {
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 服务评价卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-green-500 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-green-500 p-4 shadow-md" style="cursor: pointer;" @click="navigateToServiceEvaluation">
           <Icon icon="mdi:star" class="h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">服务评价</text>
