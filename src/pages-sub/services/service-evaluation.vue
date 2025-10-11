@@ -171,9 +171,4 @@ function navigateBack() {
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
-
-/* 特殊处理第三个元素，使其占据整行 */
-.evaluations-container > :nth-child(3) {
-  grid-column: 1 / -1;
-}
 </style>

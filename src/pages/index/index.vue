@@ -61,6 +61,13 @@ function navigateToServiceEvaluation() {
     url: '/pages-sub/services/service-evaluation',
   })
 }
+
+// 跳转到服务指南页面
+function navigateToServiceGuide() {
+  uni.navigateTo({
+    url: '/pages-sub/services/service-guide',
+  })
+}
 </script>
 
 <template>
@@ -141,7 +148,7 @@ function navigateToServiceEvaluation() {
           </view>
         </view>
         <!-- 服务指南卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md" style="cursor: pointer;" @click="navigateToServiceGuide">
           <Icon icon="mdi:help-circle" class="h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">服务指南</text>
