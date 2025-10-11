@@ -47,6 +47,13 @@ function navigateToAuth(featureType: string) {
     url: `/pages-sub/auth/index?featureType=${featureType}`,
   })
 }
+
+// 跳转到合同服务页面
+function navigateToContractService() {
+  uni.navigateTo({
+    url: '/pages-sub/contract-service/index',
+  })
+}
 </script>
 
 <template>
@@ -111,7 +118,7 @@ function navigateToAuth(featureType: string) {
           </view>
         </view>
         <!-- 合同服务卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-orange-500 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-orange-500 p-4 shadow-md" style="cursor: pointer;" @click="navigateToContractService">
           <Icon icon="mdi:file-sign" class="h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">合同服务</text>
