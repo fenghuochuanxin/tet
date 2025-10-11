@@ -1,6 +1,7 @@
 import type { PageMetaDatum, SubPackages } from '@uni-helper/vite-plugin-uni-pages'
 import { isMpWeixin } from '@uni-helper/uni-env'
 import { pages, subPackages } from '@/pages.json'
+import { useUserStore } from '@/store/user'
 
 export type PageInstance = Page.PageInstance<AnyObject, object> & { $page: Page.PageInstance<AnyObject, object> & { fullPath: string } }
 
@@ -157,3 +158,68 @@ export const isDoubleTokenMode = import.meta.env.VITE_AUTH_MODE === 'double'
  * 通常为 /pages/index/index
  */
 export const HOME_PAGE = `/${(pages as PageMetaDatum[]).find(page => page.type === 'home')?.path || (pages as PageMetaDatum[])[0].path}`
+
+/**
+ * 实名认证页面路径
+ */
+export const AUTH_PAGE = '/pages-sub/auth/index'
+
+/**
+ * 功能类型枚举
+ */
+export enum FeatureType {
+  纠纷调解 = 'dispute-mediation',
+  仲裁办理 = 'arbitration',
+  法律咨询 = 'legal-consultation',
+  案件代理 = 'case-representation',
+}
+
+/**
+ * 检查用户是否已经完成了实名认证（任意一个功能）
+ * @returns 是否已实名认证
+ */
+export function isUserAuthenticated(): boolean {
+  const userStore = useUserStore()
+  // 检查用户信息中是否有实名认证状态，并且至少有一个功能已认证
+  const authStatus = userStore.userInfo['实名认证状态'] || {}
+  return Object.values(authStatus).includes(true)
+}
+
+/**
+ * 检查用户是否已经完成了某个功能的实名认证
+ * @param featureType 功能类型
+ * @returns 是否已认证该功能
+ */
+export function isFeatureAuthenticated(featureType: string): boolean {
+  const userStore = useUserStore()
+  return userStore.checkAuthStatus(featureType)
+}
+
+/**
+ * 跳转到实名认证页面
+ * @param featureType 功能类型
+ */
+export function navigateToAuth(featureType: string): void {
+  uni.navigateTo({
+    url: `${AUTH_PAGE}?featureType=${featureType}`,
+  })
+}
+
+/**
+ * 处理需要实名认证的功能
+ * 如果用户未认证，则跳转到认证页面；如果已认证，则执行回调函数
+ * @param featureType 功能类型
+ * @param callback 已认证时执行的回调函数
+ */
+export function handleAuthRequiredFeature(featureType: string, callback?: () => void): void {
+  if (isFeatureAuthenticated(featureType)) {
+    // 如果已经认证，则执行回调函数
+    if (callback) {
+      callback()
+    }
+  }
+  else {
+    // 如果未认证，则跳转到认证页面
+    navigateToAuth(featureType)
+  }
+}

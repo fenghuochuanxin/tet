@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-// i-carbon-bell i-carbon-handshake i-carbon-gavel i-carbon-legal i-carbon-contract i-carbon-briefcase i-carbon-help i-carbon-star i-carbon-chat
 import { ref } from 'vue'
 
+// 定义页面配置
 defineOptions({
   name: 'Home',
 })
@@ -40,6 +40,13 @@ function onChange(e: any) {
   console.log('轮播图切换', e)
   current.value = e.detail
 }
+
+// 跳转到实名认证页面
+function navigateToAuth(featureType: string) {
+  uni.navigateTo({
+    url: `/pages-sub/auth/index?featureType=${featureType}`,
+  })
+}
 </script>
 
 <template>
@@ -66,11 +73,11 @@ function onChange(e: any) {
     <view class="mt-4">
       <view class="flex items-center">
         <view class="ml-4 mr-2 h-5 w-1 bg-blue-500" />
-        <text class="px-2 text-gray-800 font-medium">我要调解、仲裁</text>
+        <text class="px-2 text-gray-800 font-medium">服务反馈</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 纠纷调解卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-blue-500 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-blue-500 p-4 shadow-md" @click="navigateToAuth('dispute-mediation')">
           <Icon icon="mdi:handshake" class="h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">纠纷调解</text>
@@ -78,7 +85,7 @@ function onChange(e: any) {
           </view>
         </view>
         <!-- 仲裁办理卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md" @click="navigateToAuth('arbitration')">
           <Icon icon="mdi:gavel" class="h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">仲裁办理</text>
@@ -96,7 +103,7 @@ function onChange(e: any) {
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 法律咨询卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-red-500 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-red-500 p-4 shadow-md" @click="navigateToAuth('legal-consultation')">
           <Icon icon="mdi:scale" class="h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">法律咨询</text>
@@ -112,7 +119,7 @@ function onChange(e: any) {
           </view>
         </view>
         <!-- 案件代理卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-teal-500 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-teal-500 p-4 shadow-md" @click="navigateToAuth('case-representation')">
           <Icon icon="mdi:briefcase" class="h-10 w-10 text-white" />
           <view class="ml-3">
             <text class="text-white font-medium">案件代理</text>
@@ -134,7 +141,7 @@ function onChange(e: any) {
     <view class="mt-4">
       <view class="flex items-center">
         <view class="ml-4 mr-2 h-5 w-1 bg-blue-500" />
-        <text class="px-2 text-gray-800 font-medium">服务反馈</text>
+        <text class="px-2 text-gray-800 font-medium">我要调解、仲裁</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
         <!-- 服务评价卡片 - 左右布局 -->

@@ -11,6 +11,7 @@ const userInfoState: IUserInfoRes = {
   username: '',
   nickname: '',
   avatar: '/static/images/default-avatar.png',
+  实名认证状态: {}, // 添加实名认证状态字段
 }
 
 export const useUserStore = defineStore(
@@ -25,6 +26,10 @@ export const useUserStore = defineStore(
       if (!val.avatar) {
         val.avatar = userInfoState.avatar
       }
+      // 确保实名认证状态存在
+      if (!val['实名认证状态']) {
+        val['实名认证状态'] = {}
+      }
       userInfo.value = val
     }
     const setUserAvatar = (avatar: string) => {
@@ -36,6 +41,19 @@ export const useUserStore = defineStore(
     const clearUserInfo = () => {
       userInfo.value = { ...userInfoState }
       uni.removeStorageSync('user')
+    }
+
+    // 检查某个功能是否已实名认证
+    const checkAuthStatus = (featureType: string): boolean => {
+      return userInfo.value['实名认证状态']?.[featureType] === true
+    }
+
+    // 设置某个功能的实名认证状态
+    const setAuthStatus = (featureType: string, status: boolean = true) => {
+      if (!userInfo.value['实名认证状态']) {
+        userInfo.value['实名认证状态'] = {}
+      }
+      userInfo.value['实名认证状态'][featureType] = status
     }
 
     /**
@@ -53,6 +71,8 @@ export const useUserStore = defineStore(
       fetchUserInfo,
       setUserInfo,
       setUserAvatar,
+      checkAuthStatus,
+      setAuthStatus,
     }
   },
   {
