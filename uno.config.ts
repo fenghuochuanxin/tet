@@ -51,7 +51,7 @@ export default defineConfig({
     },
   ],
   // 动态图标需要在这里配置，或者写在vue页面中注释掉
-  safelist: ['i-carbon-code', 'i-carbon-home', 'i-carbon-user'],
+  safelist: ['i-carbon-code', 'i-carbon-home', 'i-carbon-user', 'i-carbon-bell', 'i-carbon-handshake', 'i-carbon-gavel', 'i-carbon-legal', 'i-carbon-contract', 'i-carbon-briefcase', 'i-carbon-help', 'i-carbon-star', 'i-carbon-chat'],
   rules: [
     [
       'p-safe',
