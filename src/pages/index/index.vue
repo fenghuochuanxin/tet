@@ -68,6 +68,13 @@ function navigateToServiceGuide() {
     url: '/pages-sub/services/service-guide',
   })
 }
+
+// 跳转到码上互动页面
+function navigateToOnlineInteraction() {
+  uni.navigateTo({
+    url: '/pages-sub/services/online-interaction',
+  })
+}
 </script>
 
 <template>
@@ -174,10 +181,10 @@ function navigateToServiceGuide() {
           </view>
         </view>
         <!-- 线上互动卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-indigo-500 p-4 shadow-md">
+        <view class="flex items-center rounded-xl bg-indigo-500 p-4 shadow-md" style="cursor: pointer;" @click="navigateToOnlineInteraction">
           <Icon icon="mdi:comment" class="h-10 w-10 text-white" />
           <view class="ml-3">
-            <text class="text-white font-medium">线上互动</text>
+            <text class="text-white font-medium">码上互动</text>
             <text class="block text-xs text-white/90">扫码进群在线互动</text>
           </view>
         </view>
