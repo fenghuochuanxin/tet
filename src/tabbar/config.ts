@@ -33,6 +33,12 @@ export const nativeTabbarList: NativeTabBarItem[] = [
     text: '首页',
   },
   {
+    iconPath: 'static/tabbar/example.png',
+    selectedIconPath: 'static/tabbar/exampleHL.png',
+    pagePath: 'pages/messages/messages',
+    text: '消息',
+  },
+  {
     iconPath: 'static/tabbar/personal.png',
     selectedIconPath: 'static/tabbar/personalHL.png',
     pagePath: 'pages/me/me',
@@ -63,6 +69,15 @@ export const customTabbarList: CustomTabBarItem[] = [
     // 2）配置到 unocss.config.ts 的 safelist 中
     iconType: 'unocss',
     icon: 'i-carbon-home',
+    // badge: 'dot',
+  },
+  {
+    pagePath: 'pages/messages/messages',
+    text: '消息',
+    // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
+    // 2）配置到 unocss.config.ts 的 safelist 中
+    iconType: 'unocss',
+    icon: 'i-carbon-chat',
     // badge: 'dot',
   },
   {
