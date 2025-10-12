@@ -256,6 +256,58 @@ function selectConfirmTime() {
   // 实际项目中可以调用日期时间选择器
   console.log('选择确认时间')
 }
+
+// 撤销案件
+function handleCancelCase() {
+  // 检查案件状态，已调解成功或完成的案件不允许撤销
+  const caseStatus = caseDetail.value?.status
+  // 根据模拟数据，判断案件是否已成功或完成
+  if (caseStatus === 'completed' || caseStatus === 'success' || caseStatus === '已完成' || caseStatus === '已调解成功') {
+    uni.showToast({
+      title: '该案件已完成调解，不允许撤销',
+      icon: 'none',
+    })
+    return
+  }
+
+  uni.showModal({
+    title: '撤销案件',
+    content: '确定要撤销该案件吗？撤销后将无法恢复。',
+    success: (res) => {
+      if (res.confirm) {
+        try {
+          // 这里应该是实际的API调用，现在用模拟数据代替
+          console.log('撤销案件:', caseDetail.value)
+
+          // 更新案件状态为已撤销
+          if (caseDetail.value) {
+            caseDetail.value.status = '已撤销'
+          }
+
+          // 显示撤销成功提示
+          uni.showToast({
+            title: '案件已撤销',
+            icon: 'success',
+            duration: 2000,
+            complete: () => {
+              // 成功后返回上一页
+              setTimeout(() => {
+                router.back()
+              }, 2000)
+            },
+          })
+        }
+        catch (error) {
+          console.error('撤销案件失败:', error)
+          uni.showToast({
+            title: '撤销失败，请稍后重试',
+            icon: 'none',
+          })
+        }
+      }
+    },
+  })
+}
 </script>
 
 <template>
@@ -458,10 +510,16 @@ function selectConfirmTime() {
 
     <!-- 确认按钮 -->
     <view class="confirm-section">
-      <button class="confirm-btn" @click="applyConfirm">
+      <!-- 条件渲染申请确认按钮，仅在案件未完成、未撤销时显示 -->
+      <button v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="confirm-btn" @click="applyConfirm">
         申请确认
       </button>
-      <view class="time-selector" @click="selectConfirmTime">
+      <!-- 条件渲染撤销案件按钮，仅在案件未完成、未撤销时显示 -->
+      <button v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="cancel-btn" @click="handleCancelCase">
+        撤销案件
+      </button>
+      <!-- 条件渲染时间选择器，仅在案件未完成、未撤销时显示 -->
+      <view v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="time-selector" @click="selectConfirmTime">
         <text class="time-selector-text">请选择申请确认的时间</text>
       </view>
     </view>
@@ -681,6 +739,17 @@ function selectConfirmTime() {
   height: 48px;
   background-color: #07c160;
   color: #ffffff;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.cancel-btn {
+  width: 100%;
+  height: 48px;
+  background-color: #f5f5f5;
+  color: #666666;
+  border: 1px solid #dddddd;
   font-size: 16px;
   border-radius: 4px;
   margin-bottom: 16px;
