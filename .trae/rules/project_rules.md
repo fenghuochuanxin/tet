@@ -116,3 +116,16 @@ const handleClick = () => {
 - onLoad、onShow、onReady、onHide、onUnload
 - 组件生命周期遵循 Vue3 规范
 - 注意页面栈和导航管理
+
+## 组件库
+项目使用 wot-design-uni （简称 wot-ui）作为组件库。组件已经全局引入（tree-shaking 优化），无需在每个页面中引入。
+
+使用如 `<wd-checkbox v-model="value" checked-color="#f00">沃特</wd-checkbox>` 这样的方式即可。
+然后配套script
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const value = ref(false)
+</script>
+```
