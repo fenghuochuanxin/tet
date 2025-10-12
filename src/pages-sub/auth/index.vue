@@ -70,6 +70,11 @@ onLoad((options: any) => {
             url: '/pages-sub/services/arbitration-handle',
           })
         }
+        else if (currentFeatureType === 'legal-consultation') {
+          uni.navigateTo({
+            url: '/pages-sub/services/legal-consultation',
+          })
+        }
         else {
           uni.navigateTo({
             url: '/pages-sub/demo/index',
@@ -178,6 +183,11 @@ function handleSimulateLogin() {
       else if (props.featureType === 'arbitration') {
         uni.navigateTo({
           url: '/pages-sub/services/arbitration-handle',
+        })
+      }
+      else if (props.featureType === 'legal-consultation') {
+        uni.navigateTo({
+          url: '/pages-sub/services/legal-consultation',
         })
       }
       else {
