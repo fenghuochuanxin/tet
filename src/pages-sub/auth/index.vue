@@ -147,14 +147,14 @@ function handleAuthSubmit() {
 // 查看用户协议
 function viewUserAgreement() {
   uni.navigateTo({
-    url: '/pages-sub/agreement/user.vue',
+    url: '/pages-sub/agreement/user',
   })
 }
 
 // 查看隐私政策
 function viewPrivacyPolicy() {
   uni.navigateTo({
-    url: '/pages-sub/agreement/privacy.vue',
+    url: '/pages-sub/agreement/privacy',
   })
 }
 </script>
