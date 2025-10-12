@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useUserStore } from '@/store/user'
 
 // 表单数据
-defineProps({
+const props = defineProps({
   featureType: String,
 })
 
@@ -18,7 +18,6 @@ definePage({
   },
 })
 
-const featureType = ref('')
 const featureInfo = ref({ title: '', description: '' })
 
 // 功能配置
@@ -43,22 +42,34 @@ const featureConfig = {
 
 // 生命周期
 onLoad((options: any) => {
-  if (options && options.featureType) {
-    featureType.value = options.featureType
-    if (featureConfig[featureType.value]) {
-      featureInfo.value = featureConfig[featureType.value]
+  // 优先使用 props 中的 featureType，如果没有则使用 options 中的
+  const currentFeatureType = props.featureType || (options && options.featureType)
+
+  if (currentFeatureType) {
+    if (featureConfig[currentFeatureType]) {
+      featureInfo.value = featureConfig[currentFeatureType]
     }
 
     // 检查该功能是否已经实名认证
-    if (userStore.checkAuthStatus(featureType.value)) {
-      // 如果已经认证，则直接返回上一页或跳转到相应功能页面
+    if (userStore.checkAuthStatus(currentFeatureType)) {
+      // 如果已经认证，则直接跳转到二级目录页面
       uni.showToast({
         title: '您已完成该功能的实名认证',
         icon: 'success',
       })
 
       setTimeout(() => {
-        uni.navigateBack()
+        // 对于纠纷调解功能，跳转到纠纷调解列表页面
+        if (currentFeatureType === 'dispute-mediation') {
+          uni.navigateTo({
+            url: '/pages-sub/services/dispute-mediation-list',
+          })
+        }
+        else {
+          uni.navigateTo({
+            url: '/pages-sub/demo/index',
+          })
+        }
       }, 1500)
     }
   }
@@ -116,10 +127,24 @@ function handleAuthSubmit() {
     return
   }
 
-  // 这里应该是实际的实名认证API调用
-  console.log('提交实名认证信息', {
+  handleSimulateLogin()
+}
+
+// 模拟登入功能 - 直接认证成功
+function handleSimulateLogin() {
+  // 模拟填充表单数据（可选，用于演示）
+  if (!name.value) {
+    name.value = '模拟用户'
+  }
+  if (!idNumber.value) {
+    idNumber.value = '110101199001011234'
+  }
+
+  // 这里是模拟的实名认证成功逻辑
+  console.log('模拟实名认证成功', {
     name: name.value,
     idNumber: idNumber.value,
+    featureType: props.featureType,
   })
 
   // 模拟认证成功
@@ -135,11 +160,21 @@ function handleAuthSubmit() {
     })
 
     // 设置该功能的实名认证状态
-    userStore.setAuthStatus(featureType.value)
+    userStore.setAuthStatus(props.featureType)
 
-    // 认证成功后返回上一页或跳转到相应功能页面
+    // 认证成功后跳转到二级目录页面
     setTimeout(() => {
-      uni.navigateBack()
+      // 对于纠纷调解功能，跳转到纠纷调解列表页面
+      if (props.featureType === 'dispute-mediation') {
+        uni.navigateTo({
+          url: '/pages-sub/services/dispute-mediation-list',
+        })
+      }
+      else {
+        uni.navigateTo({
+          url: '/pages-sub/demo/index',
+        })
+      }
     }, 1500)
   }, 1500)
 }
@@ -212,6 +247,11 @@ function viewPrivacyPolicy() {
 
       <button class="submit-button" @click="handleAuthSubmit">
         实名认证
+      </button>
+
+      <!-- 模拟登入按钮 -->
+      <button class="simulate-button" @click="handleSimulateLogin">
+        模拟登入
       </button>
     </view>
 
@@ -345,6 +385,17 @@ function viewPrivacyPolicy() {
   border-radius: 22.5px;
   font-size: 16px;
   font-weight: bold;
+  border: none;
+  margin-bottom: 15px;
+}
+
+.simulate-button {
+  width: 100%;
+  height: 40px;
+  background-color: #f0f0f0;
+  color: #666666;
+  border-radius: 20px;
+  font-size: 14px;
   border: none;
 }
 
