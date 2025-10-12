@@ -339,9 +339,14 @@ function handleUploadEvidencePdf() {
     type: 'file',
     extension: ['pdf'],
     success: (res) => {
-      res.tempFiles.forEach((file) => {
-        formData.value.evidencePdfs.push(file.path)
-      })
+      // 确保tempFiles是数组类型
+      if (Array.isArray(res.tempFiles)) {
+        res.tempFiles.forEach((file: any) => {
+          if (file && typeof file.path === 'string') {
+            formData.value.evidencePdfs.push(file.path)
+          }
+        })
+      }
       console.log('已选择证据PDF:', res.tempFiles)
     },
     fail: () => {
@@ -365,16 +370,17 @@ function handleDatePicker(isRespondent: boolean = false) {
   const minYear = year - 100
   const maxYear = year - 18
 
-  uni.datePicker({
-    type: 'date',
+  // 使用正确的showDatePicker方法
+  uni.showDatePicker({
+    current: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
     start: `${minYear}-01-01`,
     end: `${maxYear}-12-31`,
     success: (res) => {
       if (isRespondent) {
-        formData.value.respondentBirthDate = res.value
+        formData.value.respondentBirthDate = res.dateString
       }
       else {
-        formData.value.birthDate = res.value
+        formData.value.birthDate = res.dateString
       }
     },
   })
@@ -415,12 +421,15 @@ function submitArbitrationApplication() {
   setTimeout(() => {
     uni.hideLoading()
 
-    // 提交成功后跳转到二维码页面
+    // 生成一个模拟的案件ID
+    const mockCaseId = Date.now().toString().slice(-8)
+
+    // 提交成功后跳转到签名确认页面
     uni.navigateTo({
-      url: '/pages-sub/services/arbitration-confirmation-qrcode',
+      url: `/pages-sub/services/arbitration-signature?caseId=${mockCaseId}`,
       success: () => {
         uni.showToast({
-          title: '申请提交成功',
+          title: '请进行签名确认',
           icon: 'success',
         })
       },
@@ -433,6 +442,37 @@ function submitArbitrationApplication() {
       },
     })
   }, 1500)
+}
+
+// 跳转到我的案件页面
+function navigateToMyCases() {
+  router.push('/pages-sub/services/arbitration-case-list')
+}
+
+// 处理金额输入完成事件
+function handleAmountInputComplete() {
+  if (formData.value.targetAmount.trim()) {
+    // 生成一个模拟的案件ID
+    const mockCaseId = Date.now().toString().slice(-8)
+
+    // 跳转到签名确认页面
+    uni.navigateTo({
+      url: `/pages-sub/services/arbitration-signature?caseId=${mockCaseId}`,
+      success: () => {
+        uni.showToast({
+          title: '请进行签名确认',
+          icon: 'success',
+        })
+      },
+      fail: (err) => {
+        console.error('跳转失败:', err)
+        uni.showToast({
+          title: '跳转失败，请稍后重试',
+          icon: 'none',
+        })
+      },
+    })
+  }
 }
 </script>
 
@@ -868,6 +908,7 @@ function submitArbitrationApplication() {
           type="number"
           placeholder="例如：100"
           placeholder-class="placeholder-style"
+          @blur="handleAmountInputComplete"
         >
       </view>
 
@@ -899,6 +940,13 @@ function submitArbitrationApplication() {
           </view>
           <text class="checkbox-text">我已同意仲裁秘书指定仲裁员办理案件</text>
         </view>
+      </view>
+
+      <!-- 我的案件入口 -->
+      <view class="my-cases-button-container">
+        <button class="my-cases-button" @click="navigateToMyCases">
+          我的案件
+        </button>
       </view>
 
       <!-- 提交按钮 -->
@@ -1087,6 +1135,22 @@ function submitArbitrationApplication() {
   font-size: 16px;
   font-weight: bold;
   border: none;
+}
+
+.my-cases-button-container {
+  padding: 0 16px 16px 16px;
+  background-color: #ffffff;
+}
+
+.my-cases-button {
+  width: 100%;
+  height: 45px;
+  background-color: #ffffff;
+  color: #1989fa;
+  border-radius: 22.5px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 1px solid #1989fa;
 }
 
 /* 表单文本域样式 */
