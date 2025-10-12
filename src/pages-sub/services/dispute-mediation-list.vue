@@ -7,9 +7,7 @@ const router = useRouter()
 // 定义页面配置
 definePage({
   style: {
-    navigationBarTitleText: '纠纷调解服务',
-    navigationBarBackgroundColor: '#ffffff',
-    navigationBarTextStyle: 'black',
+    navigationStyle: 'custom', // 隐藏默认导航栏
   },
 })
 
@@ -68,7 +66,7 @@ const mediators = ref<Mediator[]>([
   {
     id: '1',
     name: '李明',
-    avatar: '/static/images/avatar1.svg',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=liming',
     title: '高级调解员',
     organization: '北京市海淀区调解中心',
     expertise: ['合同纠纷', '房产纠纷'],
@@ -79,7 +77,7 @@ const mediators = ref<Mediator[]>([
   {
     id: '2',
     name: '张华',
-    avatar: '/static/images/avatar2.svg',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=zhanghua',
     title: '资深调解员',
     organization: '上海市浦东新区调解委员会',
     expertise: ['婚姻家庭', '继承纠纷'],
@@ -90,7 +88,7 @@ const mediators = ref<Mediator[]>([
   {
     id: '3',
     name: '王芳',
-    avatar: '/static/images/avatar3.svg',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=wangfang',
     title: '专家调解员',
     organization: '广州市天河区人民调解协会',
     expertise: ['劳动争议', '侵权责任'],
@@ -101,7 +99,7 @@ const mediators = ref<Mediator[]>([
   {
     id: '4',
     name: '刘强',
-    avatar: '/static/images/avatar4.svg',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=liuqiang',
     title: '高级调解员',
     organization: '深圳市南山区商事调解中心',
     expertise: ['债务纠纷', '合同纠纷'],
@@ -112,7 +110,7 @@ const mediators = ref<Mediator[]>([
   {
     id: '5',
     name: '赵敏',
-    avatar: '/static/images/avatar5.svg',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=zhaomin',
     title: '资深调解员',
     organization: '杭州市西湖区劳动争议调解委员会',
     expertise: ['知识产权', '侵权责任'],
@@ -185,10 +183,41 @@ function handleOrganizationSelect(org: string) {
 
 // 处理调解员点击
 function handleMediatorClick(mediatorId: string) {
-  // 这里可以跳转到调解员详情页
+  console.log('handleMediatorClick called with id:', mediatorId)
+  // 使用uni-app的页面跳转API，确保参数正确传递
   uni.navigateTo({
     url: `/pages-sub/services/mediator-detail?id=${mediatorId}`,
+    success: () => {
+      console.log('成功跳转到调解员详情页，ID:', mediatorId)
+    },
+    fail: (err) => {
+      console.error('跳转到调解员详情页失败:', err)
+    },
   })
+}
+
+// 处理申请调解
+function handleApplyMediation() {
+  // 跳转到申请调解页面
+  uni.navigateTo({
+    url: '/pages-sub/services/application-mediation',
+    success: () => {
+      console.log('成功跳转到申请调解页面')
+    },
+    fail: (err) => {
+      console.error('跳转到申请调解页面失败:', err)
+      uni.showToast({
+        title: '跳转失败，请稍后重试',
+        icon: 'none',
+      })
+    },
+  })
+}
+
+// 处理我的案件
+function handleMyCases() {
+  // 后续功能实现
+  console.log('我的案件')
 }
 
 // 返回上一页
@@ -216,6 +245,11 @@ onMounted(() => {
       <view class="header-right" />
     </view>
 
+    <!-- Banner图片 -->
+    <view class="banner-section">
+      <image src="/static/images/banner-contract-service.svg" mode="aspectFill" class="banner-image" />
+    </view>
+
     <!-- 搜索栏 -->
     <view class="search-container">
       <view class="search-bar" :class="{ focused: isSearchFocused }">
@@ -233,7 +267,7 @@ onMounted(() => {
 
     <!-- 筛选标签 -->
     <view class="filter-tabs">
-      <scroll-view scroll-x="true" show-scrollbar="false" class="tabs-scroll">
+      <scroll-view :scroll-x="true" :show-scrollbar="false" class="tabs-scroll">
         <view
           v-for="tab in filterTabs"
           :key="tab.key"
@@ -244,6 +278,16 @@ onMounted(() => {
           {{ tab.label }}
         </view>
       </scroll-view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="bottom-buttons">
+      <button class="primary-button" @click="handleApplyMediation">
+        申请调解
+      </button>
+      <button class="secondary-button" @click="handleMyCases">
+        我的案件
+      </button>
     </view>
 
     <!-- 筛选条件面板 -->
@@ -328,9 +372,9 @@ onMounted(() => {
             </view>
           </view>
         </view>
-        <view class="mediator-arrow">
-          <text class="arrow-icon">→</text>
-        </view>
+        <button class="mediate-button" @click.stop="handleMediatorClick(mediator.id)">
+          去调解
+        </button>
       </view>
     </view>
   </view>
@@ -604,8 +648,63 @@ onMounted(() => {
   margin-top: 2px;
 }
 
+.mediate-button {
+  background-color: #1e90ff;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .mediator-arrow {
   color: #999999;
   font-size: 14px;
+}
+
+/* Banner样式 */
+.banner-section {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.banner-image {
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+}
+
+/* 底部按钮样式 */
+.bottom-buttons {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+.primary-button {
+  flex: 1;
+  height: 48px;
+  background-color: #1989fa;
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 24px;
+  border: none;
+}
+
+.secondary-button {
+  flex: 1;
+  height: 48px;
+  background-color: #f5f5f5;
+  color: #333333;
+  font-size: 16px;
+  border-radius: 24px;
+  border: none;
 }
 </style>
