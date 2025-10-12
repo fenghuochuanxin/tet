@@ -20,14 +20,14 @@ function navigateBack() {
 // 处理申请仲裁确认
 function handleApplyArbitrationConfirmation() {
   console.log('申请仲裁确认')
-  // 这里应该跳转到申请仲裁确认页面
+  // 跳转到仲裁申请表单页面
   uni.navigateTo({
-    url: '/pages-sub/services/arbitration-confirmation-qrcode',
+    url: '/pages-sub/services/arbitration-application',
     success: () => {
-      console.log('成功跳转到仲裁确认二维码页面')
+      console.log('成功跳转到仲裁申请表单页面')
     },
     fail: (err) => {
-      console.error('跳转到仲裁确认二维码页面失败:', err)
+      console.error('跳转到仲裁申请表单页面失败:', err)
       uni.showToast({
         title: '跳转失败，请稍后重试',
         icon: 'none',
