@@ -277,10 +277,15 @@ function viewPrivacyPolicy() {
   padding: 25px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .form-item {
   margin-bottom: 20px;
+  width: 100%;
+  max-width: 350px;
 }
 
 .form-label {
@@ -288,6 +293,7 @@ function viewPrivacyPolicy() {
   font-size: 14px;
   color: #333;
   margin-bottom: 8px;
+  text-align: left;
 }
 
 .form-input {
@@ -299,6 +305,7 @@ function viewPrivacyPolicy() {
   font-size: 14px;
   color: #333;
   background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 .placeholder-style {
