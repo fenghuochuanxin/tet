@@ -216,8 +216,20 @@ function handleApplyMediation() {
 
 // 处理我的案件
 function handleMyCases() {
-  // 后续功能实现
-  console.log('我的案件')
+  // 跳转到我的案件页面
+  uni.navigateTo({
+    url: '/pages-sub/history/index',
+    success: () => {
+      console.log('成功跳转到我的案件页面')
+    },
+    fail: (err) => {
+      console.error('跳转到我的案件页面失败:', err)
+      uni.showToast({
+        title: '跳转失败，请稍后重试',
+        icon: 'none',
+      })
+    },
+  })
 }
 
 // 返回上一页
