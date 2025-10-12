@@ -59,10 +59,15 @@ onLoad((options: any) => {
       })
 
       setTimeout(() => {
-        // 对于纠纷调解功能，跳转到纠纷调解列表页面
+        // 根据不同的功能类型跳转到对应的页面
         if (currentFeatureType === 'dispute-mediation') {
           uni.navigateTo({
             url: '/pages-sub/services/dispute-mediation-list',
+          })
+        }
+        else if (currentFeatureType === 'arbitration') {
+          uni.navigateTo({
+            url: '/pages-sub/services/arbitration-handle',
           })
         }
         else {
@@ -164,10 +169,15 @@ function handleSimulateLogin() {
 
     // 认证成功后跳转到二级目录页面
     setTimeout(() => {
-      // 对于纠纷调解功能，跳转到纠纷调解列表页面
+      // 根据不同的功能类型跳转到对应的页面
       if (props.featureType === 'dispute-mediation') {
         uni.navigateTo({
           url: '/pages-sub/services/dispute-mediation-list',
+        })
+      }
+      else if (props.featureType === 'arbitration') {
+        uni.navigateTo({
+          url: '/pages-sub/services/arbitration-handle',
         })
       }
       else {
