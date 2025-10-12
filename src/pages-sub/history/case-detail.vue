@@ -19,6 +19,14 @@ const expandedSections = ref<Record<string, boolean>>({
   agreement: false,
 })
 
+// 仲裁确认相关状态
+const arbitrationConfirm = ref({
+  showTimeSelector: false, // 是否显示时间选择器
+  showAmountDialog: false, // 是否显示金额输入对话框
+  selectedTime: '', // 选择的时间
+  amount: '', // 输入的标的金额
+})
+
 // 模拟案件详情数据映射表
 const mockCaseDetails: Record<string, any> = {
   1: {
@@ -255,6 +263,66 @@ function applyConfirm() {
 function selectConfirmTime() {
   // 实际项目中可以调用日期时间选择器
   console.log('选择确认时间')
+}
+
+// 申请仲裁确认
+function applyArbitrationConfirm() {
+  console.log('申请仲裁确认')
+  // 显示时间选择器
+  arbitrationConfirm.value.showTimeSelector = true
+}
+
+// 确认选择时间
+function confirmSelectedTime() {
+  // 如果用户没有选择时间，可以给一个默认时间
+  if (!arbitrationConfirm.value.selectedTime) {
+    arbitrationConfirm.value.selectedTime = '2024-10-25 10:00'
+  }
+  // 隐藏时间选择器
+  arbitrationConfirm.value.showTimeSelector = false
+  // 显示金额输入对话框
+  arbitrationConfirm.value.showAmountDialog = true
+}
+
+// 取消选择时间
+function cancelSelectedTime() {
+  arbitrationConfirm.value.showTimeSelector = false
+}
+
+// 确认仲裁申请
+function confirmArbitrationApplication() {
+  if (!arbitrationConfirm.value.amount) {
+    uni.showToast({
+      title: '请输入标的金额',
+      icon: 'none',
+    })
+    return
+  }
+
+  // 实际项目中可以调用API提交仲裁确认申请
+  console.log('提交仲裁确认申请', {
+    caseId,
+    time: arbitrationConfirm.value.selectedTime,
+    amount: arbitrationConfirm.value.amount,
+  })
+
+  // 显示成功提示
+  uni.showToast({
+    title: '申请完成',
+    icon: 'success',
+    duration: 2000,
+    complete: () => {
+      // 重置状态
+      arbitrationConfirm.value.showAmountDialog = false
+      arbitrationConfirm.value.amount = ''
+    },
+  })
+}
+
+// 取消仲裁申请
+function cancelArbitrationApplication() {
+  arbitrationConfirm.value.showAmountDialog = false
+  arbitrationConfirm.value.amount = ''
 }
 
 // 撤销案件
@@ -514,6 +582,11 @@ function handleCancelCase() {
       <button v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="confirm-btn" @click="applyConfirm">
         申请确认
       </button>
+
+      <!-- 条件渲染申请仲裁确认按钮，仅在案件状态为调解成功时显示 -->
+      <button v-if="caseDetail?.status === 'success' || caseDetail?.status === '已调解成功'" class="confirm-btn" @click="applyArbitrationConfirm">
+        申请仲裁确认
+      </button>
       <!-- 条件渲染撤销案件按钮，仅在案件未完成、未撤销时显示 -->
       <button v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="cancel-btn" @click="handleCancelCase">
         撤销案件
@@ -521,6 +594,50 @@ function handleCancelCase() {
       <!-- 条件渲染时间选择器，仅在案件未完成、未撤销时显示 -->
       <view v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="time-selector" @click="selectConfirmTime">
         <text class="time-selector-text">请选择申请确认的时间</text>
+      </view>
+    </view>
+
+    <!-- 时间选择器对话框 -->
+    <view v-if="arbitrationConfirm.showTimeSelector" class="amount-dialog-overlay">
+      <view class="amount-dialog">
+        <view class="amount-dialog-title">
+          请选择申请确认的时间
+        </view>
+        <view class="time-selector-content">
+          <!-- 这里是时间选择器的内容，可以根据实际需求修改 -->
+          <view class="selected-time-display">
+            <text>{{ arbitrationConfirm.selectedTime || '2024-10-25 10:00' }}</text>
+          </view>
+          <view class="time-hint">
+            <text>（实际项目中这里应该是一个日期时间选择器）</text>
+          </view>
+        </view>
+        <view class="amount-dialog-buttons">
+          <button class="cancel-amount-btn" @click="cancelSelectedTime">
+            取消
+          </button>
+          <button class="confirm-amount-btn" @click="confirmSelectedTime">
+            确定
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 金额输入对话框 -->
+    <view v-if="arbitrationConfirm.showAmountDialog" class="amount-dialog-overlay">
+      <view class="amount-dialog">
+        <view class="amount-dialog-title">
+          请输入标的金额（单位：元）
+        </view>
+        <input v-model="arbitrationConfirm.amount" type="number" class="amount-input" placeholder="例如：100">
+        <view class="amount-dialog-buttons">
+          <button class="cancel-amount-btn" @click="cancelArbitrationApplication">
+            取消
+          </button>
+          <button class="confirm-amount-btn" @click="confirmArbitrationApplication">
+            确定
+          </button>
+        </view>
       </view>
     </view>
   </view>
@@ -742,6 +859,84 @@ function handleCancelCase() {
   font-size: 16px;
   border-radius: 4px;
   margin-bottom: 12px;
+}
+
+/* 金额输入对话框样式 */
+.amount-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.amount-dialog {
+  background-color: #ffffff;
+  width: 80%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.amount-dialog-title {
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #333333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.amount-input {
+  width: 80%;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* 时间选择器内容样式 */
+.time-selector-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.selected-time-display {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333333;
+}
+
+.time-hint {
+  font-size: 12px;
+  color: #999999;
+}
+
+.amount-dialog-buttons {
+  display: flex;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cancel-amount-btn,
+.confirm-amount-btn {
+  flex: 1;
+  height: 48px;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+}
+
+.cancel-amount-btn {
+  color: #666666;
+  border-right: 1px solid #f0f0f0;
+}
+
+.confirm-amount-btn {
+  color: #07c160;
 }
 
 .cancel-btn {
