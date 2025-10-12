@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from '@/store/user'
 
 // 定义页面配置
 defineOptions({
   name: 'MessageDetail',
 })
-
-// 定义页面配置
-// 将导航栏标题设置移到onMounted中处理
 
 // 定义变量
 const userStore = useUserStore()
@@ -52,7 +49,7 @@ const messageDataMap: Record<string, any> = {
 }
 
 // 获取页面参数并加载数据
-onMounted(() => {
+onLoad((options: any) => {
   // 设置导航栏标题
   try {
     uni.setNavigationBarTitle({
@@ -63,25 +60,8 @@ onMounted(() => {
     console.error('设置导航栏标题失败:', error)
   }
 
-  // 获取路由参数 - 兼容H5和小程序平台
-  let messageId = null
-
-  try {
-    // #ifdef MP-WEIXIN
-    const pages = getCurrentPages()
-    const currentPage = pages[pages.length - 1]
-    messageId = (currentPage as any)?.options?.id
-    // #endif
-
-    // #ifdef H5
-    // H5环境下从URL中获取参数
-    const urlParams = new URLSearchParams(window.location.search)
-    messageId = urlParams.get('id')
-    // #endif
-  }
-  catch (error) {
-    console.error('获取路由参数失败:', error)
-  }
+  // 从options中直接获取路由参数
+  const messageId = options.id
 
   if (messageId) {
     // 确保messageId是字符串类型
