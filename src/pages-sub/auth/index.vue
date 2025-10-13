@@ -77,7 +77,7 @@ onLoad((options: any) => {
 
 // 表单数据
 const name = ref('')
-const idNumber = ref('')
+const idNumber = ref('123456789012345678') // 示例身份证号
 const agreeTerms = ref(false)
 
 // 表单验证
@@ -108,8 +108,6 @@ function validateForm() {
     return false
   }
 
-  // 直接检查agreeTerms变量
-  console.log('agreeTerms:', agreeTerms.value)
   if (!agreeTerms.value) {
     uni.showToast({
       title: '请阅读并同意用户协议和隐私政策',
@@ -182,14 +180,14 @@ function handleSimulateLogin() {
 // 查看用户协议
 function viewUserAgreement() {
   uni.navigateTo({
-    url: '/pages-sub/agreement/user.vue',
+    url: '/pages-sub/agreement/user',
   })
 }
 
 // 查看隐私政策
 function viewPrivacyPolicy() {
   uni.navigateTo({
-    url: '/pages-sub/agreement/privacy.vue',
+    url: '/pages-sub/agreement/privacy',
   })
 }
 </script>
@@ -233,10 +231,8 @@ function viewPrivacyPolicy() {
       </view>
 
       <view class="agreement-item">
-        <checkbox
-          v-model="agreeTerms"
-          class="agreement-checkbox"
-        />
+        <!-- 使用 wot-design-uni 的 checkbox 组件 -->
+        <wd-checkbox v-model="agreeTerms" shape="square" />
         <text class="agreement-text">
           我同意调E调法律平台使用我所提供的信息用于快速登录，查看
           <text class="agreement-link" @click="viewUserAgreement">《用户服务协议》</text>
@@ -359,11 +355,8 @@ function viewPrivacyPolicy() {
   padding: 10px;
   background-color: #f8f8f8;
   border-radius: 8px;
-}
-
-.agreement-checkbox {
-  margin-top: 2px;
-  margin-right: 8px;
+  width: 100%;
+  max-width: 350px;
 }
 
 .agreement-text {
@@ -371,6 +364,7 @@ function viewPrivacyPolicy() {
   font-size: 12px;
   color: #666;
   line-height: 1.5;
+  margin-left: 8px;
 }
 
 .agreement-link {
