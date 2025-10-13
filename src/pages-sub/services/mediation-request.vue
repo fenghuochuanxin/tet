@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+definePage({
+  style: {
+    navigationBarTitleText: '调解申请',
+  },
+})
+
 // 定义调解申请表单数据接口
 interface MediationRequestForm {
   applicantType: 'natural' | 'company'
@@ -392,26 +398,10 @@ function submitMediationRequest() {
     })
   }
 }
-
-// 返回上一页
-function navigateBack() {
-  uni.navigateBack()
-}
 </script>
 
 <template>
   <view class="mediation-request-container">
-    <!-- 顶部导航栏 -->
-    <view class="nav-bar">
-      <view class="nav-back" @click="navigateBack">
-        <text class="nav-back-icon">←</text>
-      </view>
-      <view class="nav-title">
-        调解申请
-      </view>
-      <view class="nav-right" />
-    </view>
-
     <!-- 表单内容 -->
     <view class="form-content">
       <!-- 申请人信息 -->
