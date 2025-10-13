@@ -47,7 +47,7 @@ function handleDownloadTemplate() {
 <template>
   <view class="min-h-screen bg-white">
     <view class="box-border h-40 w-full">
-      <image src="https://picsum.photos/800/400" mode="aspectFill" class="h-full w-full" />
+      <wd-img src="https://placeholder.pics/svg/800x300/409EFF/FFFFFF/占位图" mode="aspectFill" class="h-full w-full" />
     </view>
     <!-- 功能按钮区域 -->
     <view class="mx-4 mt-4">
