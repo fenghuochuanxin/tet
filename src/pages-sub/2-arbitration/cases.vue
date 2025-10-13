@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 definePage({
   style: {
-    navigationBarTitleText: '仲裁办理',
+    navigationBarTitleText: '我的案件',
   },
 })
 </script>
 
 <template>
   <view class="arbitration-apply-container">
-    仲裁办理
+    我的案件
   </view>
 </template>
 
