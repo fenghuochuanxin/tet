@@ -209,9 +209,8 @@ function handleLogout() {
 }
 
 .avatar-wrapper {
-  width: 160rpx;
-  height: 160rpx;
-  margin-right: 40rpx;
+  width: 80rpx;
+  height: 80rpx;
   overflow: hidden;
   border: 4rpx solid #f5f5f5;
   border-radius: 50%;
@@ -219,10 +218,9 @@ function handleLogout() {
 }
 
 .avatar-button {
-  height: 160rpx;
-  width: 160rpx;
+  height: 80rpx;
+  width: 80rpx;
   padding: 0;
-  margin-right: 40rpx;
   overflow: hidden;
   border: 4rpx solid #f5f5f5;
   border-radius: 50%;
