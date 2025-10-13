@@ -33,20 +33,12 @@ const { run: uploadAvatar } = useUpload<IUploadSuccessInfo>(
 
 // 微信小程序下登录
 async function handleLogin() {
-  // #ifdef MP-WEIXIN
-  // 微信登录
-  await tokenStore.wxLogin()
-
-  // #endif
-  // #ifndef MP-WEIXIN
   uni.navigateTo({
-    url: `${LOGIN_PAGE}?redirect=${encodeURIComponent('/pages/me/me')}`,
+    url: LOGIN_PAGE,
   })
-  // #endif
 }
 
 // #ifdef MP-WEIXIN
-
 // 微信小程序下选择头像事件
 function onChooseAvatar(e: any) {
   console.log('选择头像', e.detail)
@@ -103,7 +95,7 @@ function handleLogout() {
 <template>
   <view class="profile-container">
     <!-- 登录状态显示 -->
-    <view v-if="tokenStore.hasLogin">
+    <view>
       <!-- 已登录状态 - 个人资料页面 -->
       <view class="profile-header">
         <view class="header-title">
@@ -120,8 +112,16 @@ function handleLogout() {
               头像
             </view>
             <view class="item-content">
-              <image :src="userInfo.avatar" mode="scaleToFill" class="avatar-small" />
-              <text class="arrow">→</text>
+              <!-- #ifdef MP-WEIXIN -->
+              <button class="avatar-button" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
+                <image :src="userInfo.avatar" mode="scaleToFill" class="h-full w-full" />
+              </button>
+              <!-- #endif -->
+              <!-- #ifndef MP-WEIXIN -->
+              <view class="avatar-wrapper">
+                <image :src="userInfo.avatar" mode="scaleToFill" class="h-full w-full" />
+              </view>
+              <!-- #endif -->
             </view>
           </view>
 
@@ -131,8 +131,18 @@ function handleLogout() {
               昵称
             </view>
             <view class="item-content">
-              <text class="item-value">{{ userInfo.username || `用户${userInfo.userId}` }}</text>
-              <text class="arrow">→</text>
+              <!-- #ifdef MP-WEIXIN -->
+              <input
+                v-model="userInfo.username"
+                type="nickname"
+                placeholder="请输入昵称"
+              >
+              <!-- #endif -->
+              <!-- #ifndef MP-WEIXIN -->
+              <view class="username">
+                {{ userInfo.username }}
+              </view>
+              <!-- #endif -->
             </view>
           </view>
 
@@ -142,7 +152,7 @@ function handleLogout() {
               电话
             </view>
             <view class="item-content">
-              <text class="item-value">{{ userInfo.phone || '13125273021' }}</text>
+              <text class="item-value">{{ userInfo.phone }}</text>
               <text class="arrow">→</text>
             </view>
           </view>
@@ -159,44 +169,13 @@ function handleLogout() {
         </view>
 
         <!-- 退出登录按钮 -->
-        <view class="logout-container">
-          <button type="warn" class="logout-button" @click="handleLogout">
+        <view class="mt-20">
+          <wd-button v-if="tokenStore.hasLogin" type="error" size="large" block @click="handleLogout">
             退出登录
-          </button>
-        </view>
-      </view>
-    </view>
-
-    <!-- 未登录状态 -->
-    <view v-else class="login-container">
-      <!-- 用户信息区域 -->
-      <view class="user-info-section">
-        <!-- #ifdef MP-WEIXIN -->
-        <button class="avatar-button" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-          <image :src="userInfo.avatar" mode="scaleToFill" class="h-full w-full" />
-        </button>
-        <!-- #endif -->
-        <!-- #ifndef MP-WEIXIN -->
-        <view class="avatar-wrapper">
-          <image :src="userInfo.avatar" mode="scaleToFill" class="h-full w-full" />
-        </view>
-        <!-- #endif -->
-        <view class="user-details">
-          <view class="user-id">
-            ID: {{ userInfo.userId }}
-          </view>
-        </view>
-      </view>
-
-      <view class="mt-3 break-all px-3">
-        {{ JSON.stringify(userInfo, null, 2) }}
-      </view>
-
-      <view class="mt-20 px-3">
-        <view class="m-auto w-160px text-center">
-          <button type="primary" class="w-full" @click="handleLogin">
+          </wd-button>
+          <wd-button v-else type="primary" size="large" block @click="handleLogin">
             登录
-          </button>
+          </wd-button>
         </view>
       </view>
     </view>
@@ -328,12 +307,6 @@ function handleLogout() {
 .verified-text {
   font-size: 32rpx;
   color: #07c160;
-}
-
-.logout-container {
-  margin-top: 50rpx;
-  display: flex;
-  justify-content: center;
 }
 
 .logout-button {
