@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useTokenStore } from '@/store/token'
+import { useUserStore } from '@/store/user'
 
 // 表单数据
 const props = defineProps({
@@ -8,6 +9,7 @@ const props = defineProps({
 })
 
 const tokenStore = useTokenStore()
+const userStore = useUserStore()
 
 // 定义页面配置
 definePage({
@@ -96,6 +98,13 @@ async function handleSimulateLogin() {
     await tokenStore.login({
       username: username.value,
       password: idNumber.value,
+    })
+    // 前端暂存用户信息， TODO: 从后端获取用户信息
+    await userStore.setUserInfo({
+      userId: 123, // 假设后端返回的用户ID为123
+      username: username.value,
+      idNumber: idNumber.value,
+      nickname: username.value, // 假设昵称与姓名相同
     })
     uni.navigateBack({
       delta: 1,
