@@ -1,88 +1,29 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '@/store/user'
+import { useTokenStore } from '@/store/token'
 
 // 表单数据
 const props = defineProps({
   featureType: String,
 })
 
-const userStore = useUserStore()
+const tokenStore = useTokenStore()
 
 // 定义页面配置
 definePage({
   style: {
     navigationBarTitleText: '实名认证',
-    navigationBarBackgroundColor: '#ffffff',
-    navigationBarTextStyle: 'black',
   },
-})
-
-const featureInfo = ref({ title: '', description: '' })
-
-// 功能配置
-const featureConfig = {
-  'dispute-mediation': {
-    title: '纠纷调解',
-    description: '为了保障您的权益，请先完成实名认证，以便我们为您提供专业的纠纷调解服务。',
-  },
-  'arbitration': {
-    title: '仲裁办理',
-    description: '为了确保仲裁的合法性和有效性，请先完成实名认证，我们将为您提供专业的仲裁服务。',
-  },
-  'legal-consultation': {
-    title: '法律咨询',
-    description: '为了提供更精准的法律咨询服务，请先完成实名认证，我们的专业律师将为您解答。',
-  },
-  'case-representation': {
-    title: '案件代理',
-    description: '为了更好地代理您的案件，请先完成实名认证，我们将为您匹配最合适的律师。',
-  },
-}
-
-// 生命周期
-onLoad((options: any) => {
-  // 优先使用 props 中的 featureType，如果没有则使用 options 中的
-  const currentFeatureType = props.featureType || (options && options.featureType)
-
-  if (currentFeatureType) {
-    if (featureConfig[currentFeatureType]) {
-      featureInfo.value = featureConfig[currentFeatureType]
-    }
-
-    // 检查该功能是否已经实名认证
-    if (userStore.checkAuthStatus(currentFeatureType)) {
-      // 如果已经认证，则直接跳转到二级目录页面
-      uni.showToast({
-        title: '您已完成该功能的实名认证',
-        icon: 'success',
-      })
-
-      setTimeout(() => {
-        // 对于纠纷调解功能，跳转到纠纷调解列表页面
-        if (currentFeatureType === 'dispute-mediation') {
-          uni.navigateTo({
-            url: '/pages-sub/services/dispute-mediation-list',
-          })
-        }
-        else {
-          uni.navigateTo({
-            url: '/pages-sub/demo/index',
-          })
-        }
-      }, 1500)
-    }
-  }
 })
 
 // 表单数据
-const name = ref('')
+const username = ref('张三')
 const idNumber = ref('123456789012345678') // 示例身份证号
 const agreeTerms = ref(false)
 
 // 表单验证
 function validateForm() {
-  if (!name.value.trim()) {
+  if (!username.value.trim()) {
     uni.showToast({
       title: '请输入姓名',
       icon: 'none',
@@ -129,10 +70,10 @@ function handleAuthSubmit() {
 }
 
 // 模拟登入功能 - 直接认证成功
-function handleSimulateLogin() {
+async function handleSimulateLogin() {
   // 模拟填充表单数据（可选，用于演示）
-  if (!name.value) {
-    name.value = '模拟用户'
+  if (!username.value) {
+    username.value = '模拟用户'
   }
   if (!idNumber.value) {
     idNumber.value = '110101199001011234'
@@ -140,7 +81,7 @@ function handleSimulateLogin() {
 
   // 这里是模拟的实名认证成功逻辑
   console.log('模拟实名认证成功', {
-    name: name.value,
+    username: username.value,
     idNumber: idNumber.value,
     featureType: props.featureType,
   })
@@ -150,31 +91,24 @@ function handleSimulateLogin() {
     title: '认证中...',
   })
 
-  setTimeout(() => {
+  try {
+    // 调用登录接口，后端会返回token信息
+    await tokenStore.login({
+      username: username.value,
+      password: idNumber.value,
+    })
+    uni.navigateBack({
+      delta: 1,
+    })
     uni.hideLoading()
     uni.showToast({
       title: '实名认证成功',
       icon: 'success',
     })
-
-    // 设置该功能的实名认证状态
-    userStore.setAuthStatus(props.featureType)
-
-    // 认证成功后跳转到二级目录页面
-    setTimeout(() => {
-      // 对于纠纷调解功能，跳转到纠纷调解列表页面
-      if (props.featureType === 'dispute-mediation') {
-        uni.navigateTo({
-          url: '/pages-sub/services/dispute-mediation-list',
-        })
-      }
-      else {
-        uni.navigateTo({
-          url: '/pages-sub/demo/index',
-        })
-      }
-    }, 1500)
-  }, 1500)
+  }
+  catch (error) {
+    console.log('登录失败', error)
+  }
 }
 
 // 查看用户协议
@@ -200,10 +134,9 @@ function viewPrivacyPolicy() {
         <image src="/static/images/logo_temp.svg" class="logo-image" mode="aspectFit" />
         <text class="logo-text">调E调</text>
       </view>
-
-      <text class="auth-title">{{ featureInfo.title ? featureInfo.title : '实名认证' }}</text>
-      <text v-if="featureInfo.description" class="auth-subtitle">
-        {{ featureInfo.description }}
+      <text class="auth-title">实名认证</text>
+      <text class="auth-subtitle">
+        为了保障您的权益，请先完成实名认证，以便我们为您提供专业的纠纷调解服务。
       </text>
     </view>
 
@@ -211,7 +144,7 @@ function viewPrivacyPolicy() {
       <view class="form-item">
         <text class="form-label">姓名</text>
         <input
-          v-model="name"
+          v-model="username"
           class="form-input"
           type="text"
           placeholder="请输入姓名"
@@ -243,11 +176,6 @@ function viewPrivacyPolicy() {
 
       <button class="submit-button" @click="handleAuthSubmit">
         实名认证
-      </button>
-
-      <!-- 模拟登入按钮 -->
-      <button class="simulate-button" @click="handleSimulateLogin">
-        模拟登入
       </button>
     </view>
 

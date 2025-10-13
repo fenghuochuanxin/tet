@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useTokenStore } from '@/store/token'
-import { useUserStore } from '@/store/user'
 import { tabbarList } from '@/tabbar/config'
 import { isPageTabbar } from '@/tabbar/store'
 import { ensureDecodeURIComponent } from '@/utils'
@@ -24,7 +23,6 @@ onLoad((options) => {
   console.log('redirectUrl.value: ', redirectUrl.value)
 })
 
-const userStore = useUserStore()
 const tokenStore = useTokenStore()
 async function doLogin() {
   if (tokenStore.hasLogin) {
@@ -32,7 +30,7 @@ async function doLogin() {
     return
   }
   try {
-    // 调用登录接口
+    // 调用登录接口，后端会返回token信息
     await tokenStore.login({
       username: '菲鸽',
       password: '123456',
