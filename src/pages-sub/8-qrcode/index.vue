@@ -4,9 +4,7 @@ import { ref } from 'vue'
 // 定义页面配置
 definePage({
   style: {
-    navigationBarTitleText: '服务评价',
-    navigationBarBackgroundColor: '#ffffff',
-    navigationBarTextStyle: 'black',
+    navigationBarTitleText: '码上互动',
   },
 })
 
@@ -43,26 +41,10 @@ const qrcodeItems = ref([
     image: 'https://placeholder.pics/svg/200x200/FFFFFF/000000/QRCODE+办案秘书',
   },
 ])
-
-// 返回上一页
-function navigateBack() {
-  uni.navigateBack()
-}
 </script>
 
 <template>
   <view class="online-interaction-container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="header-left" @click="navigateBack">
-        <text class="back-icon">←</text>
-      </view>
-      <view class="header-title">
-        服务评价
-      </view>
-      <view class="header-right" />
-    </view>
-
     <!-- 二维码列表 -->
     <view class="qrcode-container">
       <view class="qrcode-grid">
