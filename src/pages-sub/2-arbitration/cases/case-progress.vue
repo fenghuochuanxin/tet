@@ -6,6 +6,11 @@ const router = useRouter()
 const route = useRoute()
 const caseId = route.query.id as string
 
+definePage({
+  style: {
+    navigationBarTitleText: '案件进度',
+  },
+})
 // 案件进度数据
 interface ProgressStep {
   id: string
@@ -198,26 +203,10 @@ const caseInfo = ref(mockCaseData[caseId]?.caseInfo || {
 
 // 案件进度数据
 const progressSteps = ref<ProgressStep[]>(mockCaseData[caseId]?.progressSteps || [])
-
-// 返回上一页
-function navigateBack() {
-  router.back()
-}
 </script>
 
 <template>
   <view class="case-progress-container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="header-left" @click="navigateBack">
-        <text class="back-icon">←</text>
-      </view>
-      <view class="header-title">
-        案件进度
-      </view>
-      <view class="header-right" />
-    </view>
-
     <!-- 案件基本信息 -->
     <view class="case-basic-info">
       <view class="case-number-section">

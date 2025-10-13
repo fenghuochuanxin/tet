@@ -7,7 +7,7 @@ const router = useRouter()
 // 定义页面配置
 definePage({
   style: {
-    navigationStyle: 'custom', // 隐藏默认导航栏
+    navigationBarTitleText: '我的案件',
   },
 })
 
@@ -142,7 +142,7 @@ function handleCaseClick(caseId: string) {
   // 跳转到案件详情页
   console.log('查看案件详情:', caseId)
   uni.navigateTo({
-    url: `/pages-sub/history/case-detail?id=${caseId}`,
+    url: `case-detail?id=${caseId}`,
   })
 }
 
@@ -151,13 +151,8 @@ function handleViewProgress(caseId: string) {
   // 跳转到案件进度页
   console.log('查看案件进度:', caseId)
   uni.navigateTo({
-    url: `/pages-sub/history/case-progress?id=${caseId}`,
+    url: `case-progress?id=${caseId}`,
   })
-}
-
-// 返回上一页
-function navigateBack() {
-  router.back()
 }
 
 // 获取状态对应的中文名称
@@ -187,17 +182,6 @@ function getStatusClass(status: string): string {
 
 <template>
   <view class="my-cases-container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="header-left" @click="navigateBack">
-        <text class="back-icon">←</text>
-      </view>
-      <view class="header-title">
-        我的案件
-      </view>
-      <view class="header-right" />
-    </view>
-
     <!-- 搜索栏 -->
     <view class="search-container">
       <view class="search-bar" :class="{ focused: isSearchFocused }">

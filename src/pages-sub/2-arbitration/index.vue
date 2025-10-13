@@ -29,7 +29,7 @@ function handleApplyArbitration() {
 function handleMyCases() {
   // 这里可以添加查看我的案件的逻辑
   uni.navigateTo({
-    url: '/pages-sub/2-arbitration/cases',
+    url: '/pages-sub/2-arbitration/cases/index',
   })
 }
 

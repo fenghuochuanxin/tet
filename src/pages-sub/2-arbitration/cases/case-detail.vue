@@ -228,19 +228,6 @@ function toggleSection(section: string) {
   expandedSections.value[section] = !expandedSections.value[section]
 }
 
-// 返回上一页
-function navigateBack() {
-  router.back()
-}
-
-// 查看案件进度
-function viewCaseProgress() {
-  router.push({
-    path: '/pages-sub/history/case-progress',
-    query: { id: caseId },
-  })
-}
-
 // 申请确认
 function applyConfirm() {
   // 实际项目中可以调用API提交确认
@@ -260,21 +247,6 @@ function selectConfirmTime() {
 
 <template>
   <view class="case-detail-container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="header-left" @click="navigateBack">
-        <text class="back-icon">←</text>
-      </view>
-      <view class="header-title">
-        案件详情
-      </view>
-      <view class="header-right">
-        <button class="progress-btn" size="mini" @click="viewCaseProgress">
-          案件进度
-        </button>
-      </view>
-    </view>
-
     <!-- 案件基本信息 -->
     <view class="case-basic-info">
       <view class="case-number-section">
