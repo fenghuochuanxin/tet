@@ -746,10 +746,10 @@ function submitMediationRequest() {
           <checkbox-group v-model="formData.agreePrivacy">
             <label class="checkbox-item">
               <checkbox value="true" />
-              <text>我同意即调法律服务平台使用我所提供的信息，查看</text>
-              <text class="agreement-link" @click="navigateToAgreement('user')">《用户服务协议》</text>
-              <text>和</text>
-              <text class="agreement-link" @click="navigateToAgreement('privacy')">《个人信息保护隐私政策》</text>
+              我同意即调法律服务平台使用我所提供的信息，查看
+              <view class="agreement-link" @click="navigateToAgreement('user')">《用户服务协议》</view>
+              和
+              <view class="agreement-link" @click="navigateToAgreement('privacy')">《个人信息保护隐私政策》</view>
             </label>
           </checkbox-group>
         </view>
@@ -1024,25 +1024,21 @@ function submitMediationRequest() {
         }
 
         .checkbox-item {
-          display: flex;
           align-items: flex-start;
           margin-bottom: 15px;
           padding-left: 5px;
           flex-wrap: wrap;
-        }
-
-        .checkbox-item text {
-          flex: 1;
-          margin-left: 10px;
           font-size: 14px;
           line-height: 1.6;
           color: #333;
+          word-break: break-all;
         }
 
         .agreement-link {
           color: #007aff;
-          text-decoration: underline;
           padding: 0 2px;
+          display: inline;
+          word-break: break-all;
         }
 
         .agreement-section {
