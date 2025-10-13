@@ -140,13 +140,9 @@ function viewPrivacyPolicy() {
     <view class="auth-header">
       <!-- 调E调图片，居中偏上显示 -->
       <view class="logo-container">
-        <image src="/static/images/logo_temp.svg" class="logo-image" mode="aspectFit" />
-        <text class="logo-text">调E调</text>
+        <wd-img src="https://placeholder.pics/svg/80x80/409EFF/FFFFFF/LOGO" round width="80" height="80" mode="aspectFit" />
       </view>
-      <text class="auth-title">实名认证</text>
-      <text class="auth-subtitle">
-        为了保障您的权益，请先完成实名认证，以便我们为您提供专业的纠纷调解服务。
-      </text>
+      <text class="auth-title">请完成实名认证</text>
     </view>
 
     <view class="auth-form">
@@ -175,22 +171,16 @@ function viewPrivacyPolicy() {
       <view class="agreement-item">
         <!-- 使用 wot-design-uni 的 checkbox 组件 -->
         <wd-checkbox v-model="agreeTerms" shape="square" />
-        <text class="agreement-text">
+        <view class="agreement-text">
           我同意调E调法律平台使用我所提供的信息用于快速登录，查看
           <text class="agreement-link" @click="viewUserAgreement">《用户服务协议》</text>
           和
           <text class="agreement-link" @click="viewPrivacyPolicy">《个人信息保护隐私政策》</text>
-        </text>
+        </view>
       </view>
-
-      <button class="submit-button" @click="handleAuthSubmit">
+      <wd-button block size="large" class="w-full" @click="handleAuthSubmit">
         实名认证
-      </button>
-    </view>
-
-    <view class="auth-footer">
-      <image src="/static/images/logo.png" class="footer-logo" mode="aspectFit" />
-      <text class="footer-text">调E调法律服务平台</text>
+      </wd-button>
     </view>
   </view>
 </template>
@@ -214,13 +204,6 @@ function viewPrivacyPolicy() {
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
-  padding: 20px 0;
-}
-
-.logo-image {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
 }
 
 .logo-text {
@@ -230,7 +213,7 @@ function viewPrivacyPolicy() {
 }
 
 .auth-title {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: bold;
   color: #333;
   display: block;
@@ -301,11 +284,12 @@ function viewPrivacyPolicy() {
   font-size: 12px;
   color: #666;
   line-height: 1.5;
-  margin-left: 8px;
+  word-break: break-all;
 }
 
 .agreement-link {
   color: #1989fa;
+  word-break: break-all;
 }
 
 .submit-button {
