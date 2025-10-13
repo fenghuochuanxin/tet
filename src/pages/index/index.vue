@@ -84,7 +84,7 @@ function navigateToOnlineInteraction() {
       v-model:current="current"
       :list="swiperList"
       autoplay
-      :indicator="{ type: 'dots', activeColor: '#ffffff', inactiveColor: 'rgba(255, 255, 255, 0.6)' } as any"
+      :indicator="true"
       indicator-position="bottom"
       :interval="3000"
       @click="handleClick"
