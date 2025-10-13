@@ -46,10 +46,11 @@ function handleDownloadTemplate() {
 
 <template>
   <view class="min-h-screen bg-white">
-    <!-- 头部区域 - 蓝色背景 -->
-    <wd-image src="https://picsum.photos/800/400" mode="aspectFill" class="h-full w-full" />
+    <view class="box-border h-40 w-full">
+      <image src="https://picsum.photos/800/400" mode="aspectFill" class="h-full w-full" />
+    </view>
     <!-- 功能按钮区域 -->
-    <view class="mx-4 -mt-4">
+    <view class="mx-4 mt-4">
       <!-- 申请仲裁确认按钮 -->
       <view
         class="mb-4 rounded-xl bg-blue-500 p-4 shadow-lg transition-transform duration-200 hover:scale-105"

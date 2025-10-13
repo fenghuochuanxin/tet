@@ -94,26 +94,10 @@ function handleEvaluationClick(evaluationId: string) {
       })
   }
 }
-
-// 返回上一页
-function navigateBack() {
-  uni.navigateBack()
-}
 </script>
 
 <template>
   <view class="service-evaluation-container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="header-left" @click="navigateBack">
-        <text class="back-icon">←</text>
-      </view>
-      <view class="header-title">
-        服务评价
-      </view>
-      <view class="header-right" />
-    </view>
-
     <!-- 服务评价列表 -->
     <view class="evaluations-container">
       <ServiceEvaluationItem

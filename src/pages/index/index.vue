@@ -59,7 +59,7 @@ const serviceFeedbackCards = ref<CardItem[]>([
     subtitle: '线上调解，方便省事',
     icon: 'mdi:handshake',
     backgroundColor: 'bg-blue-500',
-    route: '/pages-sub/dispute-mediation/index',
+    route: '/pages-sub/1-dispute-mediation/index',
   },
   {
     id: 'arbitration',
@@ -67,7 +67,7 @@ const serviceFeedbackCards = ref<CardItem[]>([
     subtitle: '确认产生法律强制力',
     icon: 'mdi:gavel',
     backgroundColor: 'bg-blue-400',
-    route: '/pages-sub/arbitration/index',
+    route: '/pages-sub/2-arbitration/index',
   },
 ])
 
@@ -79,7 +79,7 @@ const myServicesCards = ref<CardItem[]>([
     subtitle: '立即咨询，高效准确',
     icon: 'mdi:scale',
     backgroundColor: 'bg-red-500',
-    route: '/pages-sub/legal-consultation/index',
+    route: '/pages-sub/3-legal-consultation/index',
   },
   {
     id: 'contract-service',
@@ -87,7 +87,7 @@ const myServicesCards = ref<CardItem[]>([
     subtitle: '预防纠纷，合同保障',
     icon: 'mdi:file-sign',
     backgroundColor: 'bg-orange-500',
-    route: '/pages-sub/contract-service/index',
+    route: '/pages-sub/4-contract-service/index',
   },
   {
     id: 'case-representation',
@@ -95,7 +95,7 @@ const myServicesCards = ref<CardItem[]>([
     subtitle: '代理人查看案件',
     icon: 'mdi:briefcase',
     backgroundColor: 'bg-teal-500',
-    route: '/pages-sub/case-representation/index',
+    route: '/pages-sub/5-case-representation/index',
   },
   {
     id: 'service-guide',
@@ -103,7 +103,7 @@ const myServicesCards = ref<CardItem[]>([
     subtitle: '小程序使用指南',
     icon: 'mdi:help-circle',
     backgroundColor: 'bg-blue-400',
-    route: '/pages-sub/services/service-guide',
+    route: '/pages-sub/6-service-guide/index',
   },
 ])
 
@@ -115,15 +115,15 @@ const mediationArbitrationCards = ref<CardItem[]>([
     subtitle: '小程序服务评价',
     icon: 'mdi:star',
     backgroundColor: 'bg-green-500',
-    route: '/pages-sub/services/service-evaluation',
+    route: '/pages-sub/7-service-evaluation/index',
   },
   {
-    id: 'online-interaction',
+    id: 'qrcode',
     title: '码上互动',
     subtitle: '扫码进群在线互动',
     icon: 'mdi:comment',
     backgroundColor: 'bg-indigo-500',
-    route: '/pages-sub/services/online-interaction',
+    route: '/pages-sub/8-qrcode/index',
   },
 ])
 

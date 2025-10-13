@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
+import ContractServiceItem from './components/ContractServiceItem.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -29,7 +30,15 @@ const serviceItems = ref([
     isEnabled: true,
     onClick: () => handleServiceClick('contract-mall'),
   },
-  { id: 'electronic-contract', title: '电子合同签署', description: '暂未开发', icon: '📝', color: '#4096ff', isEnabled: false, onClick: () => handleServiceClick('electronic-contract') },
+  {
+    id: 'electronic-contract',
+    title: '电子合同签署',
+    description: '暂未开发',
+    icon: '📝',
+    color: '#4096ff',
+    isEnabled: false,
+    onClick: () => handleServiceClick('electronic-contract'),
+  },
   {
     id: 'free-contract-template',
     title: '免费合同文本下载',
@@ -76,42 +85,18 @@ function handleServiceClick(serviceId: string) {
       })
   }
 }
-
-// 返回上一页
-function navigateBack() {
-  uni.navigateBack()
-}
 </script>
 
 <template>
   <view class="contract-service-container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="header-left" @click="navigateBack">
-        <text class="back-icon">←</text>
-      </view>
-      <view class="header-title">
-        合同服务
-      </view>
-      <view class="header-right" />
-    </view>
-
     <!-- 横幅图片 -->
     <view class="banner-container">
-      <image
-        :src="bannerImage"
-        class="banner-image"
-        mode="aspectFill"
-      />
+      <image :src="bannerImage" class="banner-image" mode="aspectFill" />
     </view>
 
     <!-- 服务项目列表 -->
     <view class="services-container">
-      <ContractServiceItem
-        v-for="item in serviceItems"
-        :key="item.id"
-        :item="item"
-      />
+      <ContractServiceItem v-for="item in serviceItems" :key="item.id" :item="item" />
     </view>
   </view>
 </template>

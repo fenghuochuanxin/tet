@@ -18,8 +18,8 @@ const props = defineProps<{
 
 // 计算样式
 const itemStyle = computed(() => ({
-  backgroundColor: props.item.isEnabled ? props.item.color : '#f5f5f5',
-  opacity: props.item.isEnabled ? 1 : 0.7,
+  backgroundColor: props.item.color,
+  opacity: 1,
   color: '#ffffff',
 }))
 
