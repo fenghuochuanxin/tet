@@ -121,7 +121,19 @@ const filteredCases = computed(() => {
 
   // 按状态筛选
   if (activeFilterTab.value !== 'all') {
-    result = result.filter(caseItem => caseItem.status === activeFilterTab.value)
+    result = result.filter((caseItem) => {
+      // 检查主要状态字段
+      if (caseItem.status === activeFilterTab.value)
+        return true
+
+      // 检查额外状态字段（中文描述）
+      if (activeFilterTab.value === 'success' && caseItem.extraStatus === '调解成功')
+        return true
+      if (activeFilterTab.value === 'canceled' && caseItem.extraStatus === '已撤销')
+        return true
+
+      return false
+    })
   }
 
   return result
@@ -170,11 +182,11 @@ function getStatusText(status: string): string {
 // 获取状态对应的样式类名
 function getStatusClass(status: string): string {
   const statusClassMap: Record<string, string> = {
-    applied: 'status-applied',
-    responding: 'status-responding',
-    success: 'status-success',
-    failed: 'status-failed',
-    canceled: 'status-canceled',
+    applied: 'applied',
+    responding: 'applied', // 暂时使用已申请的样式
+    success: 'success',
+    failed: 'canceled', // 暂时使用已撤销的样式
+    canceled: 'canceled',
   }
   return statusClassMap[status] || ''
 }
@@ -230,8 +242,8 @@ function getStatusClass(status: string): string {
             <text class="case-number">{{ caseItem.caseNumber }}</text>
           </view>
           <view class="case-statuses">
-            <text class="status-tag applied">已申请</text>
-            <text v-if="caseItem.extraStatus" class="status-tag" :class="{ success: caseItem.extraStatus === '调解成功', canceled: caseItem.extraStatus === '已撤销' }">{{ caseItem.extraStatus }}</text>
+            <text class="status-tag" :class="getStatusClass(caseItem.status)">{{ getStatusText(caseItem.status) }}</text>
+            <text v-if="caseItem.extraStatus" class="status-tag" :class="caseItem.extraStatus === '调解成功' ? 'status-success' : caseItem.extraStatus === '已撤销' ? 'status-canceled' : ''">{{ caseItem.extraStatus }}</text>
           </view>
         </view>
 

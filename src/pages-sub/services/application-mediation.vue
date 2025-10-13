@@ -376,10 +376,27 @@ function validateForm(): boolean {
   return true
 }
 
+// 模拟案件调解成功时间 - 实际应用中应从后端获取
+const mockMediationSuccessTime = ref<string>('')
+
 // 提交调解申请
 function submitMediationRequest() {
   if (!validateForm()) {
     return
+  }
+
+  // 检查提交时间是否晚于调解成功时间
+  if (mockMediationSuccessTime.value) {
+    const now = new Date().getTime()
+    const mediationSuccessTime = new Date(mockMediationSuccessTime.value).getTime()
+
+    if (now > mediationSuccessTime) {
+      uni.showToast({
+        title: '案件提交时间不能晚于调解成功时间',
+        icon: 'none',
+      })
+      return
+    }
   }
 
   try {
@@ -406,6 +423,42 @@ function submitMediationRequest() {
       icon: 'none',
     })
   }
+}
+
+// 撤销案件
+function handleCancelCase() {
+  uni.showModal({
+    title: '撤销案件',
+    content: '确定要撤销该案件吗？撤销后将无法恢复。',
+    success: (res) => {
+      if (res.confirm) {
+        try {
+          // 这里应该是实际的API调用，现在用模拟数据代替
+          console.log('撤销案件:', formData.value)
+
+          // 显示撤销成功提示
+          uni.showToast({
+            title: '案件已撤销',
+            icon: 'success',
+            duration: 2000,
+            complete: () => {
+              // 成功后返回上一页
+              setTimeout(() => {
+                uni.navigateBack()
+              }, 2000)
+            },
+          })
+        }
+        catch (error) {
+          console.error('撤销案件失败:', error)
+          uni.showToast({
+            title: '撤销失败，请稍后重试',
+            icon: 'none',
+          })
+        }
+      }
+    },
+  })
 }
 
 // 返回上一页
@@ -739,10 +792,16 @@ function navigateBack() {
         </view>
       </view>
 
-      <!-- 提交按钮 -->
-      <view class="submit-btn-container">
+      <!-- 操作按钮容器 -->
+      <view class="buttons-container">
+        <!-- 提交按钮 -->
         <button class="submit-btn" @click="submitMediationRequest">
           提交申请
+        </button>
+
+        <!-- 撤销案件按钮 -->
+        <button class="cancel-btn" @click="handleCancelCase">
+          撤销案件
         </button>
       </view>
     </view>
@@ -1030,6 +1089,16 @@ function navigateBack() {
     margin-bottom: 16px;
   }
 
+  .buttons-container {
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
   .submit-btn {
     width: 100%;
     height: 44px;
@@ -1039,6 +1108,16 @@ function navigateBack() {
     border-radius: 4px;
     font-size: 16px;
     font-weight: 500;
+  }
+
+  .cancel-btn {
+    width: 100%;
+    height: 44px;
+    background-color: #f5f5f5;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
   }
 
   .section-subtitle {
