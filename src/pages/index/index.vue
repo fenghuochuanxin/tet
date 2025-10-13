@@ -41,38 +41,96 @@ function onChange(e: any) {
   current.value = e.detail
 }
 
-// 跳转到实名认证页面
-function navigateToAuth(featureType: string) {
-  uni.navigateTo({
-    url: `/pages-sub/auth/index?featureType=${featureType}`,
-  })
+// 定义卡片配置接口
+interface CardItem {
+  id: string
+  title: string
+  subtitle: string
+  icon: string
+  backgroundColor: string
+  route: string
 }
 
-// 跳转到合同服务页面
-function navigateToContractService() {
-  uni.navigateTo({
-    url: '/pages-sub/contract-service/index',
-  })
-}
+// 服务反馈模块卡片配置
+const serviceFeedbackCards = ref<CardItem[]>([
+  {
+    id: 'dispute-mediation',
+    title: '纠纷调解',
+    subtitle: '线上调解，方便省事',
+    icon: 'mdi:handshake',
+    backgroundColor: 'bg-blue-500',
+    route: '/pages-sub/dispute-mediation/index',
+  },
+  {
+    id: 'arbitration',
+    title: '仲裁办理',
+    subtitle: '确认产生法律强制力',
+    icon: 'mdi:gavel',
+    backgroundColor: 'bg-blue-400',
+    route: '/pages-sub/arbitration/index',
+  },
+])
 
-// 跳转到服务评价页面
-function navigateToServiceEvaluation() {
-  uni.navigateTo({
-    url: '/pages-sub/services/service-evaluation',
-  })
-}
+// 我的服务模块卡片配置
+const myServicesCards = ref<CardItem[]>([
+  {
+    id: 'legal-consultation',
+    title: '法律咨询',
+    subtitle: '立即咨询，高效准确',
+    icon: 'mdi:scale',
+    backgroundColor: 'bg-red-500',
+    route: '/pages-sub/legal-consultation/index',
+  },
+  {
+    id: 'contract-service',
+    title: '合同服务',
+    subtitle: '预防纠纷，合同保障',
+    icon: 'mdi:file-sign',
+    backgroundColor: 'bg-orange-500',
+    route: '/pages-sub/contract-service/index',
+  },
+  {
+    id: 'case-representation',
+    title: '案件代理',
+    subtitle: '代理人查看案件',
+    icon: 'mdi:briefcase',
+    backgroundColor: 'bg-teal-500',
+    route: '/pages-sub/case-representation/index',
+  },
+  {
+    id: 'service-guide',
+    title: '服务指南',
+    subtitle: '小程序使用指南',
+    icon: 'mdi:help-circle',
+    backgroundColor: 'bg-blue-400',
+    route: '/pages-sub/services/service-guide',
+  },
+])
 
-// 跳转到服务指南页面
-function navigateToServiceGuide() {
-  uni.navigateTo({
-    url: '/pages-sub/services/service-guide',
-  })
-}
+// 我要调解、仲裁模块卡片配置
+const mediationArbitrationCards = ref<CardItem[]>([
+  {
+    id: 'service-evaluation',
+    title: '服务评价',
+    subtitle: '小程序服务评价',
+    icon: 'mdi:star',
+    backgroundColor: 'bg-green-500',
+    route: '/pages-sub/services/service-evaluation',
+  },
+  {
+    id: 'online-interaction',
+    title: '码上互动',
+    subtitle: '扫码进群在线互动',
+    icon: 'mdi:comment',
+    backgroundColor: 'bg-indigo-500',
+    route: '/pages-sub/services/online-interaction',
+  },
+])
 
-// 跳转到码上互动页面
-function navigateToOnlineInteraction() {
+// 统一的导航处理函数
+function handleCardClick(route: string) {
   uni.navigateTo({
-    url: '/pages-sub/services/online-interaction',
+    url: route,
   })
 }
 </script>
@@ -97,27 +155,25 @@ function navigateToOnlineInteraction() {
       <text class="text-sm text-amber-800">我啦！欢迎律师、调解员、合同管理员加入平台，共同打造专业法律服务网络</text>
     </view>
 
-    <!-- 我要调解、仲裁区块 -->
+    <!-- 服务反馈区块 -->
     <view class="mt-4">
       <view class="flex items-center">
         <view class="ml-4 mr-2 h-5 w-1 bg-blue-500" />
         <text class="px-2 text-gray-800 font-medium">服务反馈</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
-        <!-- 纠纷调解卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-blue-500 p-4 shadow-md" @click="navigateToAuth('dispute-mediation')">
-          <Icon icon="mdi:handshake" class="h-10 w-10 text-white" />
+        <!-- 服务反馈卡片 - 通过配置数组渲染 -->
+        <view
+          v-for="card in serviceFeedbackCards"
+          :key="card.id"
+          class="flex cursor-pointer items-center rounded-xl p-4 shadow-md"
+          :class="card.backgroundColor"
+          @click="handleCardClick(card.route)"
+        >
+          <Icon :icon="card.icon" class="h-10 w-10 text-white" />
           <view class="ml-3">
-            <text class="text-white font-medium">纠纷调解</text>
-            <text class="block text-xs text-white/90">线上调解，方便省事</text>
-          </view>
-        </view>
-        <!-- 仲裁办理卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md" @click="navigateToAuth('arbitration')">
-          <Icon icon="mdi:gavel" class="h-10 w-10 text-white" />
-          <view class="ml-3">
-            <text class="text-white font-medium">仲裁办理</text>
-            <text class="block text-xs text-white/90">确认产生法律强制力</text>
+            <text class="text-white font-medium">{{ card.title }}</text>
+            <text class="block text-xs text-white/90">{{ card.subtitle }}</text>
           </view>
         </view>
       </view>
@@ -130,62 +186,42 @@ function navigateToOnlineInteraction() {
         <text class="px-2 text-gray-800 font-medium">我的服务</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
-        <!-- 法律咨询卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-red-500 p-4 shadow-md" @click="navigateToAuth('legal-consultation')">
-          <Icon icon="mdi:scale" class="h-10 w-10 text-white" />
+        <!-- 我的服务卡片 - 通过配置数组渲染 -->
+        <view
+          v-for="card in myServicesCards"
+          :key="card.id"
+          class="flex cursor-pointer items-center rounded-xl p-4 shadow-md"
+          :class="card.backgroundColor"
+          @click="handleCardClick(card.route)"
+        >
+          <Icon :icon="card.icon" class="h-10 w-10 text-white" />
           <view class="ml-3">
-            <text class="text-white font-medium">法律咨询</text>
-            <text class="block text-xs text-white/90">立即咨询，高效准确</text>
-          </view>
-        </view>
-        <!-- 合同服务卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-orange-500 p-4 shadow-md" style="cursor: pointer;" @click="navigateToContractService">
-          <Icon icon="mdi:file-sign" class="h-10 w-10 text-white" />
-          <view class="ml-3">
-            <text class="text-white font-medium">合同服务</text>
-            <text class="block text-xs text-white/90">预防纠纷，合同保障</text>
-          </view>
-        </view>
-        <!-- 案件代理卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-teal-500 p-4 shadow-md" @click="navigateToAuth('case-representation')">
-          <Icon icon="mdi:briefcase" class="h-10 w-10 text-white" />
-          <view class="ml-3">
-            <text class="text-white font-medium">案件代理</text>
-            <text class="block text-xs text-white/90">代理人查看案件</text>
-          </view>
-        </view>
-        <!-- 服务指南卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-blue-400 p-4 shadow-md" style="cursor: pointer;" @click="navigateToServiceGuide">
-          <Icon icon="mdi:help-circle" class="h-10 w-10 text-white" />
-          <view class="ml-3">
-            <text class="text-white font-medium">服务指南</text>
-            <text class="block text-xs text-white/90">小程序使用指南</text>
+            <text class="text-white font-medium">{{ card.title }}</text>
+            <text class="block text-xs text-white/90">{{ card.subtitle }}</text>
           </view>
         </view>
       </view>
     </view>
 
-    <!-- 服务反馈区块 -->
+    <!-- 我要调解、仲裁区块 -->
     <view class="mt-4">
       <view class="flex items-center">
         <view class="ml-4 mr-2 h-5 w-1 bg-blue-500" />
         <text class="px-2 text-gray-800 font-medium">我要调解、仲裁</text>
       </view>
       <view class="grid grid-cols-2 mt-2 gap-3 px-4">
-        <!-- 服务评价卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-green-500 p-4 shadow-md" style="cursor: pointer;" @click="navigateToServiceEvaluation">
-          <Icon icon="mdi:star" class="h-10 w-10 text-white" />
+        <!-- 我要调解、仲裁卡片 - 通过配置数组渲染 -->
+        <view
+          v-for="card in mediationArbitrationCards"
+          :key="card.id"
+          class="flex cursor-pointer items-center rounded-xl p-4 shadow-md"
+          :class="card.backgroundColor"
+          @click="handleCardClick(card.route)"
+        >
+          <Icon :icon="card.icon" class="h-10 w-10 text-white" />
           <view class="ml-3">
-            <text class="text-white font-medium">服务评价</text>
-            <text class="block text-xs text-white/90">小程序服务评价</text>
-          </view>
-        </view>
-        <!-- 线上互动卡片 - 左右布局 -->
-        <view class="flex items-center rounded-xl bg-indigo-500 p-4 shadow-md" style="cursor: pointer;" @click="navigateToOnlineInteraction">
-          <Icon icon="mdi:comment" class="h-10 w-10 text-white" />
-          <view class="ml-3">
-            <text class="text-white font-medium">码上互动</text>
-            <text class="block text-xs text-white/90">扫码进群在线互动</text>
+            <text class="text-white font-medium">{{ card.title }}</text>
+            <text class="block text-xs text-white/90">{{ card.subtitle }}</text>
           </view>
         </view>
       </view>
