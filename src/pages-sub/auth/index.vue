@@ -75,6 +75,11 @@ onLoad((options: any) => {
             url: '/pages-sub/services/legal-consultation',
           })
         }
+        else if (currentFeatureType === 'case-representation') {
+          uni.navigateTo({
+            url: '/pages-sub/services/case-representation',
+          })
+        }
         else {
           uni.navigateTo({
             url: '/pages-sub/demo/index',
@@ -188,6 +193,11 @@ function handleSimulateLogin() {
       else if (props.featureType === 'legal-consultation') {
         uni.navigateTo({
           url: '/pages-sub/services/legal-consultation',
+        })
+      }
+      else if (props.featureType === 'case-representation') {
+        uni.navigateTo({
+          url: '/pages-sub/services/case-representation',
         })
       }
       else {
