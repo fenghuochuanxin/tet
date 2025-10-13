@@ -7,7 +7,7 @@ const router = useRouter()
 // 定义页面配置
 definePage({
   style: {
-    navigationStyle: 'custom', // 隐藏默认导航栏
+    navigationBarTitleText: '纠纷调解',
   },
 })
 
@@ -246,17 +246,6 @@ onMounted(() => {
 
 <template>
   <view class="dispute-mediation-container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="header-left" @click="navigateBack">
-        <text class="back-icon">←</text>
-      </view>
-      <view class="header-title">
-        纠纷调解服务
-      </view>
-      <view class="header-right" />
-    </view>
-
     <!-- Banner图片 -->
     <view class="banner-section">
       <image src="/static/images/banner-contract-service.svg" mode="aspectFill" class="banner-image" />
