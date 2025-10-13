@@ -145,16 +145,11 @@ function handleSearch() {
   // 这里可以添加搜索逻辑，目前已经在computed中处理
 }
 
-// 跳转到咨询页面
+// 跳转到律师详情页面
 function goToConsultation(lawyer: any) {
-  uni.showToast({
-    title: `即将咨询律师：${lawyer.name}`,
-    icon: 'none',
+  uni.navigateTo({
+    url: `/pages-sub/services/lawyer-detail?id=${lawyer.id}&name=${lawyer.name}`,
   })
-  // 实际项目中应该跳转到咨询详情页面
-  // uni.navigateTo({
-  //   url: `/pages-sub/services/consultation-detail?id=${lawyer.id}&name=${lawyer.name}`
-  // })
 }
 
 // 返回上一页
@@ -286,7 +281,7 @@ function navigateBack() {
     <view class="lawyers-list">
       <view v-for="lawyer in filteredLawyers" :key="lawyer.id" class="lawyer-item">
         <view class="lawyer-item-header">
-          <image :src="lawyer.avatar" class="lawyer-avatar" mode="aspectFill" />
+          <image :src="lawyer.avatar" class="lawyer-avatar" mode="aspectFill" style="cursor: pointer;" @click="goToConsultation(lawyer)" />
           <view class="lawyer-info">
             <view class="lawyer-name-section">
               <text class="lawyer-name">{{ lawyer.name }}</text>
