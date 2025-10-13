@@ -26,12 +26,9 @@ function navigateToOnlineConsultation() {
 
 // 跳转到智能咨询
 function navigateToSmartConsultation() {
-  uni.showToast({
-    title: '即将进入智能咨询',
-    icon: 'none',
-  })
-  // 实际项目中应该跳转到智能咨询页面
-  // router.push('/path/to/smart-consultation')
+  console.log('跳转到DeepSeek智能咨询')
+  // 直接跳转到DeepSeek网页
+  window.location.href = 'https://deepseek.com/'
 }
 </script>
 
