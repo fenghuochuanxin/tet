@@ -363,6 +363,32 @@ function handleCancelCase() {
     },
   })
 }
+
+// 编辑案件信息 - 根据要求，只能在案件调解成功之前才能更改
+function handleEditCase() {
+  if (caseDetail.value?.status === 'success' || caseDetail.value?.status === '已调解成功') {
+    uni.showToast({
+      title: '案件已调解成功，无法编辑',
+      icon: 'none',
+      duration: 2000,
+    })
+    return
+  }
+
+  if (caseDetail.value?.status === 'canceled' || caseDetail.value?.status === '已撤销') {
+    uni.showToast({
+      title: '案件已撤销，无法编辑',
+      icon: 'none',
+      duration: 2000,
+    })
+    return
+  }
+
+  router.push({
+    path: '/pages-sub/2-arbitration/cases/case-edit',
+    query: { id: caseId },
+  })
+}
 </script>
 
 <template>
@@ -562,6 +588,10 @@ function handleCancelCase() {
       <!-- 条件渲染撤销案件按钮，仅在案件未完成、未撤销时显示 -->
       <button v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="cancel-btn" @click="handleCancelCase">
         撤销案件
+      </button>
+      <!-- 条件渲染编辑案件信息按钮，仅在案件未完成、未撤销时显示 -->
+      <button v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="edit-btn" @click="handleEditCase">
+        编辑案件信息
       </button>
       <!-- 条件渲染时间选择器，仅在案件未完成、未撤销时显示 -->
       <view v-if="caseDetail?.status !== 'completed' && caseDetail?.status !== 'success' && caseDetail?.status !== '已完成' && caseDetail?.status !== '已调解成功' && caseDetail?.status !== '已撤销'" class="time-selector" @click="selectConfirmTime">
@@ -917,6 +947,17 @@ function handleCancelCase() {
   background-color: #f5f5f5;
   color: #666666;
   border: 1px solid #dddddd;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* 编辑案件按钮 */
+.edit-btn {
+  width: 100%;
+  height: 48px;
+  background-color: #1989fa;
+  color: #ffffff;
   font-size: 16px;
   border-radius: 4px;
   margin-bottom: 16px;

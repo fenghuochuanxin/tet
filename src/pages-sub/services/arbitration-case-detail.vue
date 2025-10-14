@@ -15,6 +15,12 @@ definePage({
   },
 })
 
+// 是否处于编辑模式
+const isEditing = ref(false)
+
+// 临时存储修改前的案件详情，用于取消修改
+const originalCaseDetail = ref<CaseDetail | null>(null)
+
 // 案件详情数据接口
 interface CaseDetail {
   id: string
@@ -111,13 +117,64 @@ function navigateBack() {
   router.back()
 }
 
+// 进入编辑模式
+function editCase() {
+  // 保存原始数据，用于取消修改
+  originalCaseDetail.value = { ...caseDetail.value }
+  isEditing.value = true
+}
+
 // 确认提交案件
 function confirmSubmit() {
-  // 跳转到签名确认页面
-  router.push({
-    path: '/pages-sub/services/arbitration-signature',
-    query: { caseId: caseDetail.value.id },
+  if (isEditing.value) {
+    // 如果处于编辑模式，先导航到签名页面，而不是直接保存案件
+    router.push({
+      path: '/pages-sub/5-case-representation/arbitration-signature',
+      query: {
+        caseId: caseDetail.value.id,
+        fromEdit: 'true', // 标记来自编辑模式
+      },
+    })
+  }
+  else {
+    // 否则直接进入签名流程
+    router.push({
+      path: '/pages-sub/5-case-representation/arbitration-signature',
+      query: { caseId: caseDetail.value.id },
+    })
+  }
+}
+
+// 提交案件修改
+function submitCaseChanges() {
+  // 显示保存成功提示
+  uni.showToast({
+    title: '案件信息已保存',
+    icon: 'success',
+    duration: 2000,
+    success: () => {
+      // 保存成功后进入签名流程
+      setTimeout(() => {
+        isEditing.value = false
+        router.push({
+          path: '/pages-sub/5-case-representation/arbitration-signature',
+          query: {
+            caseId: caseDetail.value.id,
+            hasChanges: 'true',
+          },
+        })
+      }, 2000)
+    },
   })
+}
+
+// 取消修改
+function cancelEdit() {
+  if (originalCaseDetail.value) {
+    // 恢复原始数据
+    caseDetail.value = { ...originalCaseDetail.value }
+  }
+  isEditing.value = false
 }
 
 // 撤销案件
@@ -330,12 +387,24 @@ onMounted(() => {
 
     <!-- 操作按钮 -->
     <view v-if="!caseDetail.isCompleted" class="action-buttons">
-      <button class="primary-button" @click="confirmSubmit">
-        确认提交
-      </button>
-      <button class="secondary-button" @click="revokeCase">
-        撤销案件
-      </button>
+      <!-- 非编辑模式 -->
+      <view v-if="!isEditing" class="button-group">
+        <button class="primary-button" @click="editCase">
+          修改案件
+        </button>
+        <button class="secondary-button" @click="revokeCase">
+          撤销案件
+        </button>
+      </view>
+      <!-- 编辑模式 -->
+      <view v-else class="button-group">
+        <button class="primary-button" @click="confirmSubmit">
+          立即提交
+        </button>
+        <button class="secondary-button" @click="cancelEdit">
+          取消修改
+        </button>
+      </view>
     </view>
   </view>
 </template>
@@ -429,6 +498,9 @@ onMounted(() => {
 .collapsible-section {
   background-color: #ffffff;
   margin-bottom: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 .section-header {
@@ -437,6 +509,7 @@ onMounted(() => {
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
 }
 
 .section-title {
@@ -461,6 +534,26 @@ onMounted(() => {
 .info-item {
   display: flex;
   margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+/* 美化滚动条 */
+.arbitration-case-detail-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.arbitration-case-detail-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.arbitration-case-detail-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.arbitration-case-detail-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
 .info-item:last-child {
@@ -501,8 +594,12 @@ onMounted(() => {
   background-color: #ffffff;
   padding: 16px;
   border-top: 1px solid #f0f0f0;
+}
+
+.button-group {
   display: flex;
   gap: 12px;
+  justify-content: space-between;
 }
 
 .primary-button {
@@ -528,14 +625,38 @@ onMounted(() => {
 }
 
 /* 适配不同平台 */
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 767px) {
+  /* 小屏幕下恢复为上下布局 */
+  .main-content {
+    flex-direction: column;
+  }
+
+  .case-basic-info {
+    flex: none;
+    width: auto;
+    margin-bottom: 12px;
+  }
+
+  .detailed-info {
+    flex: none;
+  }
+
   .arbitration-case-detail-container {
-    max-width: 600px;
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  /* 大屏下左右布局，增加最大宽度 */
+  .arbitration-case-detail-container {
+    max-width: 1200px;
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   }
+
   .action-buttons {
-    max-width: 600px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 }

@@ -148,7 +148,7 @@ function handleSearch() {
 // 跳转到律师详情页面
 function goToConsultation(lawyer: any) {
   uni.navigateTo({
-    url: `/pages-sub/services/lawyer-detail?id=${lawyer.id}&name=${lawyer.name}`,
+    url: `/pages-sub/3-legal-consultation/online-consulting/lawyer-detail?id=${lawyer.id}&name=${lawyer.name}`,
   })
 }
 

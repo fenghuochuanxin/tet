@@ -320,7 +320,9 @@ function handleUploadEvidenceImage() {
     sizeType: ['compressed'],
     sourceType: ['album', 'camera'],
     success: (res) => {
-      formData.value.evidenceImages.push(...res.tempFilePaths)
+      if (Array.isArray(res.tempFilePaths)) {
+        formData.value.evidenceImages.push(...res.tempFilePaths)
+      }
       console.log('已选择证据图片:', res.tempFilePaths)
     },
     fail: () => {
@@ -370,8 +372,8 @@ function handleDatePicker(isRespondent: boolean = false) {
   const minYear = year - 100
   const maxYear = year - 18
 
-  // 使用正确的showDatePicker方法
-  uni.showDatePicker({
+  // 使用uni-app正确的日期选择器API
+  uni.chooseDate({
     current: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
     start: `${minYear}-01-01`,
     end: `${maxYear}-12-31`,
@@ -426,7 +428,7 @@ function submitArbitrationApplication() {
 
     // 提交成功后跳转到签名确认页面
     uni.navigateTo({
-      url: `/pages-sub/services/arbitration-signature?caseId=${mockCaseId}`,
+      url: `/pages-sub/5-case-representation/arbitration-signature?caseId=${mockCaseId}`,
       success: () => {
         uni.showToast({
           title: '请进行签名确认',
@@ -457,7 +459,7 @@ function handleAmountInputComplete() {
 
     // 跳转到签名确认页面
     uni.navigateTo({
-      url: `/pages-sub/services/arbitration-signature?caseId=${mockCaseId}`,
+      url: `/pages-sub/5-case-representation/arbitration-signature?caseId=${mockCaseId}`,
       success: () => {
         uni.showToast({
           title: '请进行签名确认',

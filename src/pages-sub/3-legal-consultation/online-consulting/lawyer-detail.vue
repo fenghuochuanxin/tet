@@ -28,14 +28,14 @@ const lawyerInfo = ref({
 function onLoad(options: any) {
   console.log('Lawyer detail page loaded with options:', options)
 
-  // 模拟律师数据 - 包含多个律师信息
+  // 模拟律师数据 - 包含多个律师信息，确保与列表页完全一致
   const mockLawyers = [
     {
       id: '1',
       name: '王鹏年',
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=wangpengnian',
       organization: '庆阳仲裁委员会调解中心',
-      expertise: ['借款纠纷', '买卖纠纷', '租赁纠纷', '建设工程', '交通事故'],
+      expertise: ['借款纠纷', '买卖纠纷', '租赁纠纷', '交通事故'],
       isOnline: true,
       接待量: 80,
       rating: 5.0,
@@ -46,50 +46,79 @@ function onLoad(options: any) {
       id: '2',
       name: '刘宇',
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=liuyu',
-      organization: '北京律师事务所',
-      expertise: ['合同纠纷', '知识产权', '劳动争议', '公司法律', '房产纠纷'],
-      isOnline: true,
-      接待量: 120,
-      rating: 4.8,
-      description: '专业处理各类合同纠纷和知识产权案件',
-      region: '北京市,朝阳区',
+      organization: '庆阳仲裁委员会调解中心',
+      expertise: [],
+      isOnline: false,
+      接待量: 143,
+      rating: 5.0,
+      description: '暂无信息',
+      region: '甘肃省,庆阳市,西峰区',
     },
     {
       id: '3',
+      name: '李海琴',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=lihaiqin',
+      organization: '庆阳仲裁委员会调解中心',
+      expertise: ['买卖纠纷', '建设工程'],
+      isOnline: false,
+      接待量: 120,
+      rating: 4.8,
+      description: '暂无信息',
+      region: '甘肃省,庆阳市,西峰区',
+    },
+    {
+      id: '4',
       name: '张伟',
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=zhangwei',
-      organization: '上海法律中心',
-      expertise: ['刑事辩护', '婚姻家庭', '继承纠纷', '人身损害', '医疗纠纷'],
-      isOnline: false,
+      organization: '庆阳仲裁委员会调解中心',
+      expertise: ['婚姻家庭', '继承纠纷'],
+      isOnline: true,
       接待量: 95,
+      rating: 4.9,
+      description: '暂无信息',
+      region: '甘肃省,庆阳市,西峰区',
+    },
+    {
+      id: '5',
+      name: '王丽',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=wangli',
+      organization: '庆阳仲裁委员会调解中心',
+      expertise: ['劳动争议', '侵权责任'],
+      isOnline: true,
+      接待量: 110,
       rating: 4.7,
-      description: '专注刑事辩护和婚姻家庭法律事务',
-      region: '上海市,浦东新区',
+      description: '暂无信息',
+      region: '甘肃省,庆阳市,西峰区',
     },
   ]
 
   // 根据传入的id查找对应的律师信息，如果没有id或未找到，则使用默认值
   let selectedLawyer = mockLawyers[0] // 默认使用第一个律师
 
+  console.log('Received options:', options)
+
   if (options && options.id) {
-    // 尝试根据id查找律师
-    const found = mockLawyers.find(lawyer => lawyer.id === options.id)
+    // 确保ID是字符串类型
+    const receivedId = String(options.id)
+    console.log('Received ID (string):', receivedId)
+
+    // 使用严格相等进行比较
+    const found = mockLawyers.find(lawyer => lawyer.id === receivedId)
+    console.log('Found lawyer:', found)
+
     if (found) {
       selectedLawyer = found
     }
+    else {
+      console.log('Lawyer not found, available IDs:', mockLawyers.map(l => l.id))
+    }
+
+    console.log('Selected lawyer:', selectedLawyer)
   }
 
-  // 逐个属性赋值，确保响应式更新
-  lawyerInfo.value.id = selectedLawyer.id
-  lawyerInfo.value.name = selectedLawyer.name
-  lawyerInfo.value.avatar = selectedLawyer.avatar
-  lawyerInfo.value.organization = selectedLawyer.organization
-  lawyerInfo.value.expertise = selectedLawyer.expertise
-  lawyerInfo.value.isOnline = selectedLawyer.isOnline
-  lawyerInfo.value.接待量 = selectedLawyer.接待量
-  lawyerInfo.value.rating = selectedLawyer.rating
-  lawyerInfo.value.description = selectedLawyer.description
-  lawyerInfo.value.region = selectedLawyer.region
+  // 使用Object.assign确保响应式更新正确生效
+  Object.assign(lawyerInfo.value, selectedLawyer)
+  console.log('Updated lawyerInfo:', lawyerInfo.value)
 }
 
 // 返回上一页

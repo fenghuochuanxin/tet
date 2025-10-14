@@ -21,7 +21,7 @@ definePage({
 function handleApplyArbitration() {
   // 这里可以添加申请仲裁确认的逻辑
   uni.navigateTo({
-    url: '/pages-sub/2-arbitration/apply',
+    url: '/pages-sub/2-arbitration/arbitration-confirmation/arbitration-application',
   })
 }
 
@@ -41,7 +41,7 @@ function handleMyCases() {
 function handleDownloadTemplate() {
   // 这里可以添加查看我的案件的逻辑
   uni.navigateTo({
-    url: '/pages-sub/2-arbitration/template-download',
+    url: '/pages-sub/2-arbitration/protocol-module-download/template-download',
   })
 }
 </script>

@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 const caseId = ref(route.query.caseId as string || '')
+const hasChanges = ref(route.query.hasChanges === 'true')
 
 // 定义页面配置
 definePage({
@@ -140,7 +141,7 @@ function submitSignature() {
 
     // 提交成功提示
     uni.showToast({
-      title: '签名提交成功',
+      title: hasChanges.value ? '案件修改已提交并签名成功' : '签名提交成功',
       icon: 'success',
       duration: 2000,
       success: () => {
@@ -193,29 +194,56 @@ onUnmounted(() => {
       <view class="header-right" />
     </view>
 
-    <!-- 签名区域 -->
-    <view class="signature-section">
-      <view class="signature-container">
-        <canvas
-          ref="canvasRef"
-          class="signature-canvas"
-          style="touch-action: none;"
-          @touchstart="startDrawing"
-          @touchmove="draw"
-          @touchend="stopDrawing"
-          @touchcancel="stopDrawing"
-        />
+    <!-- 主内容区域 - 左右分布 -->
+    <view class="main-content">
+      <!-- 签名区域 -->
+      <view class="signature-section">
+        <view class="signature-container">
+          <canvas
+            ref="canvasRef"
+            class="signature-canvas"
+            style="touch-action: none;"
+            @touchstart="startDrawing"
+            @touchmove="draw"
+            @touchend="stopDrawing"
+            @touchcancel="stopDrawing"
+          />
+        </view>
+
+        <!-- 签名控制 -->
+        <view class="signature-controls">
+          <slider
+            v-model="lineWidth"
+            min="1"
+            max="10"
+            show-value
+            class="line-width-slider"
+          />
+        </view>
       </view>
 
-      <!-- 签名控制 -->
-      <view class="signature-controls">
-        <slider
-          v-model="lineWidth"
-          min="1"
-          max="10"
-          show-value
-          class="line-width-slider"
-        />
+      <!-- 信息区域 -->
+      <view class="info-section">
+        <view class="info-header">
+          <text class="info-title">案件信息</text>
+        </view>
+
+        <view class="info-content">
+          <view class="info-item">
+            <text class="info-label">案件编号：</text>
+            <text class="info-value">{{ caseId }}</text>
+          </view>
+
+          <view class="info-item">
+            <text class="info-label">操作类型：</text>
+            <text class="info-value">{{ hasChanges ? '修改后签名' : '确认签名' }}</text>
+          </view>
+
+          <view class="info-tips">
+            <text class="tips-title">签名提示</text>
+            <text class="tips-content">请使用手指在左侧区域进行签名，签名完成后点击"提交签名"按钮。签名将作为您对本案件的确认依据。</text>
+          </view>
+        </view>
       </view>
     </view>
 
@@ -272,9 +300,15 @@ onUnmounted(() => {
   width: 40px;
 }
 
+.main-content {
+  flex: 1;
+  display: flex;
+  padding: 16px;
+  gap: 16px;
+}
+
 .signature-section {
   flex: 1;
-  padding: 16px;
   display: flex;
   flex-direction: column;
 }
@@ -339,9 +373,92 @@ onUnmounted(() => {
 /* 适配不同平台 */
 @media screen and (min-width: 768px) {
   .arbitration-signature-container {
-    max-width: 600px;
+    max-width: 1200px;
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+
+  /* 在大屏设备上使用左右分布 */
+  .main-content {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .signature-section {
+    flex: 1;
+    margin-right: 16px;
+  }
+
+  .info-section {
+    width: 300px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-header {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .info-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+  }
+
+  .info-content {
+    flex: 1;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .info-label {
+    font-size: 12px;
+    color: #999999;
+    margin-bottom: 4px;
+  }
+
+  .info-value {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 500;
+  }
+
+  .info-tips {
+    margin-top: 24px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #1989fa;
+  }
+
+  .tips-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .tips-content {
+    font-size: 13px;
+    color: #666666;
+    line-height: 1.6;
+  }
+}
+
+/* 在小屏设备上保持原有布局 */
+@media screen and (max-width: 767px) {
+  .info-section {
+    display: none;
   }
 }
 </style>

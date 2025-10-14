@@ -30,6 +30,7 @@ const serviceItems = ref([
     isEnabled: true,
     onClick: () => handleServiceClick('contract-mall'),
   },
+
   {
     id: 'electronic-contract',
     title: '电子合同签署',
@@ -67,15 +68,15 @@ function handleServiceClick(serviceId: string) {
 
   switch (serviceId) {
     case 'contract-mall':
-      // 跳转到京东商城
+      // 跳转到合同商城弹窗页面
       uni.navigateTo({
-        url: '/pages-sub/contract-service/mall',
+        url: '/pages-sub/4-contract-service/contract-mall/index',
       })
       break
     case 'free-contract-template':
       // 跳转到合同模板下载页面
       uni.navigateTo({
-        url: '/pages-sub/contract-service/templates',
+        url: '/pages-sub/4-contract-service/free-contract-download/index',
       })
       break
     default:

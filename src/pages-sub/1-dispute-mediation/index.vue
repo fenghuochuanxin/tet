@@ -220,7 +220,7 @@ function handleApplyMediation() {
 function handleMyCases() {
   // 跳转到我的案件页面
   uni.navigateTo({
-    url: '/pages-sub/history/index',
+    url: '/pages-sub/1-dispute-mediation/my-case/index',
     success: () => {
       console.log('成功跳转到我的案件页面')
     },
